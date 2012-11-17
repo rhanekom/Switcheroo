@@ -17,6 +17,10 @@ Switcheroo is licensed under the [MIT license](http://opensource.org/licenses/MI
 Quick Start
 ------------
 
+**Installation**
+
+Nuget packages can be found [here](https://www.nuget.org/packages/Switcheroo).
+
 **Add configuration**
 
 ```xml
