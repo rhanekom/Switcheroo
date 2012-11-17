@@ -1,11 +1,12 @@
 ﻿namespace Switcheroo
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// A configuration store for feature toggles that can be managed by name.
     /// </summary>
-    public interface IFeatureConfiguration
+    public interface IFeatureConfiguration : IEnumerable<IFeatureToggle>
     {
         /// <summary>
         /// Adds the specified feature toggle.
@@ -42,5 +43,11 @@
         /// </summary>
         /// <param name="configuration">The source of configuration.</param>
         void Initialize(Action<IConfigurationExpression> configuration);
+
+        /// <summary>
+        /// Diagnostics on what's currently contained in this configuration instance.
+        /// </summary>
+        /// <returns>A descriptive string on feature toggles contained in this instance.</returns>
+        string WhatDoIHave();
     }
 }

@@ -1,7 +1,9 @@
 ﻿namespace Switcheroo.Tests
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using Moq;
     using NUnit.Framework;
     using Switcheroo.Configuration;
@@ -177,6 +179,58 @@
 
             Assert.IsNull(configuration.Get(TestFeatureName));
             Assert.AreEqual(0, configuration.Count);
+        }
+
+        [Test]
+        public void Can_Enumerate_Over_Feature_Toggles()
+        {
+            var configuration = new FeatureConfiguration();
+
+            var f1 = new BooleanToggle("f1", true);
+            configuration.Add(f1);
+
+            var f2 = new BooleanToggle("f2", true);
+            configuration.Add(f2);
+
+            Assert.IsTrue(configuration.Any(x => x == f1));
+            Assert.IsTrue(configuration.Any(x => x == f2));
+        }
+
+        [Test]
+        public void Can_Enumerate_Over_Feature_Toggles_Via_Base_IEnumerable_Interface()
+        {
+            var configuration = new FeatureConfiguration();
+
+            var f1 = new BooleanToggle("f1", true);
+            configuration.Add(f1);
+
+            var f2 = new BooleanToggle("f2", true);
+            configuration.Add(f2);
+
+            IEnumerable baseConfiguration = configuration;
+            var enumerator = baseConfiguration.GetEnumerator();
+
+            Assert.IsTrue(enumerator.MoveNext());
+        }
+
+        [Test]
+        public void WhatDoIHave_Returns_Diagnostic_String_On_Feature_Toggle_Instances()
+        {
+            var configuration = new FeatureConfiguration();
+
+            var f1 = new BooleanToggle("f1", true);
+            configuration.Add(f1);
+
+            var f2 = new BooleanToggle("f2", false);
+            configuration.Add(f2);
+
+            string diagnostics = configuration.WhatDoIHave();
+
+            StringAssert.Contains("f1", diagnostics);
+            StringAssert.Contains(bool.TrueString, diagnostics);
+
+            StringAssert.Contains("f2", diagnostics);
+            StringAssert.Contains(bool.FalseString, diagnostics);
         }
 
         #endregion

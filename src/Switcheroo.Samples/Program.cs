@@ -7,11 +7,13 @@
     {
         static void Main(string[] args)
         {
-            Feature.Initialize(x => x.FromApplicationConfig());
+            Features.Initialize(x => x.FromApplicationConfig());
 
             var logger = new Logger();
 
-            for (int i = 0; i< 100; i++)
+            logger.Log(Features.WhatDoIHave());
+
+            for (int i = 0; i < 100; i++)
             {
                 logger.Log(i.ToString(CultureInfo.InvariantCulture));
             }

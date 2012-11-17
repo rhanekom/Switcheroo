@@ -56,7 +56,7 @@
     <Compile Include="Configuration\FeatureToggleCollection.cs" />
     <Compile Include="Configuration\IConfigurationReader.cs" />
     <Compile Include="Configuration\ToggleConfig.cs" />
-    <Compile Include="Feature.cs" />
+    <Compile Include="Features.cs" />
     <Compile Include="FeatureConfiguration.cs" />
     <Compile Include="IFeatureConfiguration.cs" />
     <Compile Include="IFeatureToggle.cs" />

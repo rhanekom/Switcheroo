@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Switcheroo
 {
     using System;
@@ -89,6 +91,38 @@ namespace Switcheroo
         }
 
         /// <summary>
+        /// Diagnostics on what's currently contained in this configuration instance.
+        /// </summary>
+        /// <returns>
+        /// A descriptive string on feature toggles contained in this instance.
+        /// </returns>
+        public string WhatDoIHave()
+        {
+            const string tabs = "\t\t\t";
+
+            var sb = new StringBuilder();
+            
+            sb.Append("Name");
+            sb.Append(tabs);
+            sb.AppendLine("IsEnabled");
+
+            sb.Append("----");
+            sb.Append(tabs);
+            sb.AppendLine("---------");
+            
+
+            foreach (var featureToggle in features)
+            {
+                var feature = featureToggle.Value;
+                sb.Append(feature.Name);
+                sb.Append(tabs);
+                sb.AppendLine(feature.IsEnabled().ToString());
+            }
+
+            return sb.ToString();
+        }
+
+        /// <summary>
         /// Determines whether the feature toggle with the specified name is enabled.
         /// </summary>
         /// <param name="featureName">Name of the feature toggle.</param>
@@ -100,6 +134,34 @@ namespace Switcheroo
         {
             IFeatureToggle toggle = Get(featureName);
             return toggle != null && toggle.IsEnabled();
+        }
+
+        #endregion
+
+        #region IEnumerable<IFeatureToggle> Members
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>1</filterpriority>
+        public IEnumerator<IFeatureToggle> GetEnumerator()
+        {
+            return features.Values.GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         #endregion

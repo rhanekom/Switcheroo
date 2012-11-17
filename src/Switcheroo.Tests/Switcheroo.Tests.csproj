@@ -60,7 +60,7 @@
     <Compile Include="Configuration\ApplicationConfigurationReaderTests.cs" />
     <Compile Include="Configuration\FeatureToggleConfigurationTests.cs" />
     <Compile Include="FeatureConfigurationTests.cs" />
-    <Compile Include="FeatureTests.cs" />
+    <Compile Include="FeaturesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Toggles\BooleanToggleTests.cs" />
   </ItemGroup>

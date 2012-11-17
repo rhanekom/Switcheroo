@@ -49,7 +49,7 @@
 
         private ConsoleColor GetColor()
         {
-            if (Feature.IsEnabled("Log.InColor"))
+            if (Features.IsEnabled("Log.InColor"))
             {
                 return GetRandomColor();
             }

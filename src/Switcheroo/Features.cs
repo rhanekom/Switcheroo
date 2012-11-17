@@ -5,11 +5,11 @@
     /// <summary>
     /// A static instance of an <see cref="IFeatureConfiguration"/>, provided for convenience.
     /// </summary>
-    public static class Feature
+    public static class Features
     {
         #region Construction
 
-        static Feature()
+        static Features()
         {
             Instance = new FeatureConfiguration();
         }
@@ -71,6 +71,15 @@
         public static void Initialize(Action<IConfigurationExpression> configuration)
         {
             Instance.Initialize(configuration); 
+        }
+
+        /// <summary>
+        /// Diagnostics on what's currently contained in this configuration instance.
+        /// </summary>
+        /// <returns>A descriptive string on feature toggles contained in this instance.</returns>
+        public static string WhatDoIHave()
+        {
+            return Instance.WhatDoIHave();
         }
 
         #endregion

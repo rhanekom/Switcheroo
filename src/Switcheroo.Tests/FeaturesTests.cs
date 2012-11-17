@@ -5,7 +5,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class FeatureTests
+    public class FeaturesTests
     {
         #region Globals
 
@@ -20,7 +20,7 @@
         public void Setup()
         {
             featureConfiguration = new Mock<IFeatureConfiguration>();
-            Feature.Instance = featureConfiguration.Object;
+            Features.Instance = featureConfiguration.Object;
         }
 
         #endregion
@@ -33,7 +33,7 @@
             IFeatureToggle toggle = new Mock<IFeatureToggle>().Object;
             featureConfiguration.Setup(x => x.Add(toggle));
 
-            Feature.Add(toggle);
+            Features.Add(toggle);
 
             featureConfiguration.VerifyAll();
         }
@@ -43,7 +43,7 @@
         {
             featureConfiguration.Setup(x => x.IsEnabled(TestFeatureName)).Returns(true);
 
-            Assert.IsTrue(Feature.IsEnabled(TestFeatureName));
+            Assert.IsTrue(Features.IsEnabled(TestFeatureName));
 
             featureConfiguration.VerifyAll();
         }
@@ -54,7 +54,7 @@
             IFeatureToggle toggle = new Mock<IFeatureToggle>().Object;
             featureConfiguration.Setup(x => x.Get(TestFeatureName)).Returns(toggle);
 
-            Assert.AreSame(toggle, Feature.Get(TestFeatureName));
+            Assert.AreSame(toggle, Features.Get(TestFeatureName));
 
             featureConfiguration.VerifyAll();
         }
@@ -65,7 +65,7 @@
             Action<IConfigurationExpression> action = a => { };
             featureConfiguration.Setup(x => x.Initialize(action));
 
-            Feature.Initialize(action);
+            Features.Initialize(action);
 
             featureConfiguration.VerifyAll();
         }
