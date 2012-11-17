@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B5592E32-9DB1-46B4-857E-88D45F5E2F9B}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{85394CBA-ABF1-4AF1-B581-1B5C5E8B3D91}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Switcheroo</RootNamespace>
-    <AssemblyName>Switcheroo</AssemblyName>
+    <RootNamespace>Switcheroo.Samples</RootNamespace>
+    <AssemblyName>Switcheroo.Samples</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,10 +22,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Switcheroo.XML</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,15 +32,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Switcheroo.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,22 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\ConfigurationExpression.cs" />
-    <Compile Include="Configuration\ApplicationConfigurationReader.cs" />
-    <Compile Include="IConfigurationExpression.cs" />
-    <Compile Include="Configuration\FeatureToggleConfiguration.cs" />
-    <Compile Include="Configuration\FeatureToggleCollection.cs" />
-    <Compile Include="Configuration\IConfigurationReader.cs" />
-    <Compile Include="Configuration\ToggleConfig.cs" />
-    <Compile Include="Feature.cs" />
-    <Compile Include="FeatureConfiguration.cs" />
-    <Compile Include="IFeatureConfiguration.cs" />
-    <Compile Include="IFeatureToggle.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Toggles\BooleanToggle.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Switcheroo.snk" />
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Switcheroo\Switcheroo.csproj">
+      <Project>{b5592e32-9db1-46b4-857e-88d45f5e2f9b}</Project>
+      <Name>Switcheroo</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

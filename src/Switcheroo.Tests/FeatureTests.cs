@@ -1,5 +1,6 @@
 ﻿namespace Switcheroo.Tests
 {
+    using System;
     using Moq;
     using NUnit.Framework;
 
@@ -54,6 +55,17 @@
             featureConfiguration.Setup(x => x.Get(TestFeatureName)).Returns(toggle);
 
             Assert.AreSame(toggle, Feature.Get(TestFeatureName));
+
+            featureConfiguration.VerifyAll();
+        }
+
+        [Test]
+        public void Initializes_Passes_Through_To_Instance()
+        {
+            Action<IConfigurationExpression> action = a => { };
+            featureConfiguration.Setup(x => x.Initialize(action));
+
+            Feature.Initialize(action);
 
             featureConfiguration.VerifyAll();
         }

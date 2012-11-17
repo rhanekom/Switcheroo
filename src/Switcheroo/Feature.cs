@@ -64,6 +64,15 @@
             return Instance.Get(toggleName);
         }
 
+        /// <summary>
+        /// Initializes the this configuration using the specified configuration action.
+        /// </summary>
+        /// <param name="configuration">The source of configuration.</param>
+        public static void Initialize(Action<IConfigurationExpression> configuration)
+        {
+            Instance.Initialize(configuration); 
+        }
+
         #endregion
     }
 }

@@ -31,5 +31,16 @@
         /// <returns>The feature toggle with the specified name, if found, else <c>null</c>.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="toggleName"></paramref> is <c>null</c>.</exception>
         IFeatureToggle Get(string toggleName);
+
+        /// <summary>
+        /// Clears this instance, removing all feature toggles from it.
+        /// </summary>
+        void Clear();
+
+        /// <summary>
+        /// Initializes the this configuration using the specified configuration action.
+        /// </summary>
+        /// <param name="configuration">The source of configuration.</param>
+        void Initialize(Action<IConfigurationExpression> configuration);
     }
 }

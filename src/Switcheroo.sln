@@ -12,6 +12,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{387B44
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{829926AB-443E-4771-99E3-F41D333DD6C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Switcheroo.Samples", "Switcheroo.Samples\Switcheroo.Samples.csproj", "{85394CBA-ABF1-4AF1-B581-1B5C5E8B3D91}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{CDB68AD0-D852-49DB-8A28-C12714E35010}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,8 +32,17 @@ Global
 		{6E5E792C-EF97-4B93-ADC5-587C28634B4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E5E792C-EF97-4B93-ADC5-587C28634B4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E5E792C-EF97-4B93-ADC5-587C28634B4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85394CBA-ABF1-4AF1-B581-1B5C5E8B3D91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85394CBA-ABF1-4AF1-B581-1B5C5E8B3D91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85394CBA-ABF1-4AF1-B581-1B5C5E8B3D91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85394CBA-ABF1-4AF1-B581-1B5C5E8B3D91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B5592E32-9DB1-46B4-857E-88D45F5E2F9B} = {829926AB-443E-4771-99E3-F41D333DD6C3}
+		{6E5E792C-EF97-4B93-ADC5-587C28634B4B} = {829926AB-443E-4771-99E3-F41D333DD6C3}
+		{85394CBA-ABF1-4AF1-B581-1B5C5E8B3D91} = {CDB68AD0-D852-49DB-8A28-C12714E35010}
 	EndGlobalSection
 EndGlobal

@@ -2,6 +2,7 @@ namespace Switcheroo
 {
     using System;
     using System.Collections.Generic;
+    using Configuration;
 
     /// <summary>
     /// A concrete implementation of a <see cref="IFeatureConfiguration"/>.  This configuration stores
@@ -12,6 +13,21 @@ namespace Switcheroo
         #region Globals
 
         private readonly Dictionary<string, IFeatureToggle> features = new Dictionary<string, IFeatureToggle>();
+
+        #endregion
+
+        #region Public Members
+
+        /// <summary>
+        /// Gets the count of feature toggles currently configured.
+        /// </summary>
+        /// <value>
+        /// The count of feature toggles.
+        /// </value>
+        public int Count
+        {
+            get { return features.Count; }
+        }
 
         #endregion
 
@@ -47,6 +63,29 @@ namespace Switcheroo
 
             IFeatureToggle toggle;
             return features.TryGetValue(toggleName, out toggle) ? toggle : null;
+        }
+
+        /// <summary>
+        /// Clears this instance, removing all feature toggles from it.
+        /// </summary>
+        public void Clear()
+        {
+            features.Clear();
+        }
+
+        /// <summary>
+        /// Initializes the this configuration using the specified configuration action.
+        /// </summary>
+        /// <param name="configuration">The source of configuration.</param>
+        public void Initialize(Action<IConfigurationExpression> configuration)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException("configuration");
+            }
+
+            var expression = new ConfigurationExpression(this);
+            configuration(expression);
         }
 
         /// <summary>
