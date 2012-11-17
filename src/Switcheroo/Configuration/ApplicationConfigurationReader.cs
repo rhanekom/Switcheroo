@@ -66,6 +66,11 @@ namespace Switcheroo.Configuration
 
         private IFeatureToggle ConvertToFeatureToggle(ToggleConfig config)
         {
+            if (config.IsMutable)
+            {
+                return new MutableToggle(config.Name, config.Enabled);
+            }
+            
             return new BooleanToggle(config.Name, config.Enabled);
         }
 

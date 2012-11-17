@@ -38,34 +38,6 @@
             Assert.AreEqual(TestName, toggle.Name);
         }
 
-        [Test]
-        public void Enable_Enables_Toggle()
-        {
-            var toggle = new BooleanToggle(TestName, false);
-            toggle.Enable();
-            Assert.IsTrue(toggle.IsEnabled());
-        }
-
-        [Test]
-        public void Disable_Disables_Toggle()
-        {
-            var toggle = new BooleanToggle(TestName, true);
-            toggle.Disable();
-            Assert.IsFalse(toggle.IsEnabled());
-        }
-
-        [Test]
-        public void Toggle_Switches_Between_States()
-        {
-            var toggle = new BooleanToggle(TestName, true);
-            
-            toggle.Toggle();
-            Assert.IsFalse(toggle.IsEnabled());
-
-            toggle.Toggle();
-            Assert.IsTrue(toggle.IsEnabled());
-        }
-
         #endregion
     }
 }

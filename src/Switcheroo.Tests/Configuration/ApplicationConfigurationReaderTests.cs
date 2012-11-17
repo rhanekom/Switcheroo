@@ -4,6 +4,7 @@
     using System.Linq;
     using NUnit.Framework;
     using Switcheroo.Configuration;
+    using Switcheroo.Toggles;
 
     [TestFixture]
     public class ApplicationConfigurationReaderTests
@@ -29,6 +30,19 @@
 
             Assert.IsTrue(feature1.IsEnabled());
             Assert.IsFalse(feature2.IsEnabled());
+        }
+
+        [Test]
+        public void Read_Returns_Mutable_Toggles_If_Immutable()
+        {
+            var reader = new ApplicationConfigurationReader();
+            List<IFeatureToggle> features = reader.GetFeatures().ToList();
+
+            var feature = features.Single(x => x.Name == "testImmutable");
+            Assert.IsInstanceOf<BooleanToggle>(feature);
+
+            feature = features.Single(x => x.Name == "testSimpleEnabled");
+            Assert.IsInstanceOf<MutableToggle>(feature);
         }
     }
 }

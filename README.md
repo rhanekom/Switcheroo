@@ -47,11 +47,14 @@ if (Feature.IsEnabled("Log.InColor"))
 }
 ```
 
-Features
+Features  
 ---------
 * Loading from custom configuration resources.
 * Code friendly initialization without a dependency on application configuration.
 * IOC friendly through IFeatureConfiguration instances, or Feature.Instance backing instance.
 * Feature toggle diagnostics (WhatDoIHave)
 
-
+Toggle types
+--------------
+* Boolean (true/false, immutable)
+* Mutable (true/false, mutable)

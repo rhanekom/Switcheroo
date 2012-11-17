@@ -7,12 +7,6 @@
     /// </summary>
     public class BooleanToggle : IFeatureToggle
     {
-        #region Globals
-
-        private bool enabled;
-
-        #endregion
-
         #region Construction
 
         /// <summary>
@@ -28,7 +22,7 @@
                 throw new ArgumentNullException("name");
             }
 
-            this.enabled = enabled;
+            Enabled = enabled;
             Name = name;
         }
 
@@ -52,37 +46,20 @@
         /// </returns>
         public bool IsEnabled()
         {
-            return enabled;
+            return Enabled;
         }
 
         #endregion
 
-        #region Public Members
+        #region Protected Members
 
         /// <summary>
-        /// Enables this instance.
+        /// Gets or sets a value indicating whether this <see cref="BooleanToggle" /> is enabled.
         /// </summary>
-        public void Enable()
-        {
-            enabled = true;
-        }
-
-        /// <summary>
-        /// Disables this instance.
-        /// </summary>
-        public void Disable()
-        {
-            enabled = false;
-        }
-
-        /// <summary>
-        /// Toggles this instance.  If enabled, this will disable the feature. If disabled,
-        /// This will enable this feature.
-        /// </summary>
-        public void Toggle()
-        {
-            enabled = !enabled;
-        }
+        /// <value>
+        ///   <c>true</c> if enabled; otherwise, <c>false</c>.
+        /// </value>
+        protected bool Enabled { get; set; }
 
         #endregion
     }

@@ -1,9 +1,8 @@
-using System.Text;
-
 namespace Switcheroo
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
     using Configuration;
 
     /// <summary>

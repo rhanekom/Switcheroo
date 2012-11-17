@@ -32,5 +32,18 @@
             get { return (bool)this["enabled"]; }
             set { this["enabled"] = value; }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is immutable.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is immutable; otherwise, <c>false</c>.
+        /// </value>
+        [ConfigurationProperty("mutable", IsRequired = false, DefaultValue = true, IsKey = false)]
+        public bool IsMutable
+        {
+            get { return (bool)this["mutable"]; }
+            set { this["mutable"] = value; }
+        }
     }
 }
