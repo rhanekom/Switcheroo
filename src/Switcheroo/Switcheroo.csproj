@@ -31,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Switcheroo.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -70,6 +71,7 @@
     <Compile Include="Toggles\StaticFeatureToggleBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Switcheroo.nuspec" />
     <None Include="Switcheroo.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
