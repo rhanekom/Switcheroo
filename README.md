@@ -51,10 +51,15 @@ if (Feature.IsEnabled("Log.InColor"))
 }
 ```
 
+
 Toggle types
 --------------
 
 **Boolean (true/false)**
+
+```c#
+features.Add(new BooleanToggle("Feature1", true));
+```
 
 ```xml
 <features>
@@ -67,7 +72,9 @@ Toggle types
 
 **Date Range (true/false, within date range)**
 
-_From_ and _until_ dates can be any valid date format parseable by _DateTime.Parse_.
+```c#
+features.Add(new DateRangeToggle("Feature2", true, DateTime.Now.AddDays(5), null));
+```
 
 ```xml
 <features>
@@ -79,6 +86,7 @@ _From_ and _until_ dates can be any valid date format parseable by _DateTime.Par
     </toggles>
  </features>
 ```
+_From_ and _until_ dates can be any valid date format parseable by _DateTime.Parse_.
 
 Other features  
 ----------------
@@ -95,10 +103,28 @@ IFeatureConfiguration features = new FeatureConfiguration
 			DateTime.Now.AddDays(-2),
 			DateTime.Now.AddDays(3))
 	};
-```c#
-
-**Loading from custom configuration resources :  build on top of _IConfigurationReader_**
+```
 
 **IOC friendly through _IFeatureConfiguration_ instances, or Feature.Instance backing instance**
 
+```c#
+For<IFeatureConfiguration>().Use(Features.Instance);
+```
+
 **Feature toggle diagnostics (_IFeatureConfiguration.WhatDoIHave_)**
+
+```c#
+Console.WriteLine(features.WhatDoIHave());
+```
+```text
+Name                            Feature1
+IsEnabled                      True
+
+
+Name                           Feature2
+IsEnabled                     True
+From                            11/16/2012 3:32:23 PM
+Until                             11/21/2012 3:32:23 PM
+```
+
+**Loading from custom configuration resources :  build on top of _IConfigurationReader_**
