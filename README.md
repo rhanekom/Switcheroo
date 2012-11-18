@@ -124,7 +124,7 @@ IsEnabled     True
 Name          Feature2
 IsEnabled     True
 From          11/16/2012 3:32:23 PM
-Until          11/21/2012 3:32:23 PM
+Until         11/21/2012 3:32:23 PM
 ```
 
 **Loading from custom configuration resources :  build on top of _IConfigurationReader_**
