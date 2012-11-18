@@ -42,7 +42,7 @@ Nuget packages can be found [here](https://www.nuget.org/packages/Switcheroo).
 Feature.Initialize(x => x.FromApplicationConfig());
 ```
 
-**Enaling/disabling  features**
+**Checking feature status**
 
 ```c#
 if (Feature.IsEnabled("Log.InColor"))
@@ -105,7 +105,7 @@ IFeatureConfiguration features = new FeatureConfiguration
 	};
 ```
 
-**IOC friendly through _IFeatureConfiguration_ instances, or Feature.Instance backing instance**
+**IOC friendly through _IFeatureConfiguration_ instances, or the static _Feature.Instance_ backing instance**
 
 ```c#
 For<IFeatureConfiguration>().Use(Features.Instance);
@@ -117,14 +117,14 @@ For<IFeatureConfiguration>().Use(Features.Instance);
 Console.WriteLine(features.WhatDoIHave());
 ```
 ```text
-Name                            Feature1
-IsEnabled                      True
+Name           Feature1
+IsEnabled     True
 
 
-Name                           Feature2
-IsEnabled                     True
-From                            11/16/2012 3:32:23 PM
-Until                             11/21/2012 3:32:23 PM
+Name           Feature2
+IsEnabled     True
+From             11/16/2012 3:32:23 PM
+Until              11/21/2012 3:32:23 PM
 ```
 
 **Loading from custom configuration resources :  build on top of _IConfigurationReader_**
