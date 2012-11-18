@@ -111,7 +111,7 @@ IFeatureConfiguration features = new FeatureConfiguration
 For<IFeatureConfiguration>().Use(Features.Instance);
 ```
 
-**Feature toggle diagnostics (_IFeatureConfiguration.WhatDoIHave_)**
+**Feature toggle diagnostics : _IFeatureConfiguration.WhatDoIHave_ **
 
 ```c#
 Console.WriteLine(features.WhatDoIHave());
