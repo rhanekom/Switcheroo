@@ -66,6 +66,8 @@
     <Compile Include="Toggles\BooleanToggle.cs" />
     <Compile Include="Toggles\DateRangeToggle.cs" />
     <Compile Include="Toggles\DynamicFeatureToggleBase.cs" />
+    <Compile Include="Toggles\FeatureEstablishedException.cs" />
+    <Compile Include="Toggles\EstablishedFeatureToggle.cs" />
     <Compile Include="Toggles\MutableToggle.cs" />
     <Compile Include="Toggles\FeatureToggleBase.cs" />
     <Compile Include="Toggles\StaticFeatureToggleBase.cs" />

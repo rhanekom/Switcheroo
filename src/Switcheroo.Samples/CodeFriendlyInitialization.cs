@@ -14,8 +14,13 @@
                         "Feature2",
                         true,
                         DateTime.Now.AddDays(-2),
-                        DateTime.Now.AddDays(3))
+                        DateTime.Now.AddDays(3)),
+                    new EstablishedFeatureToggle("establishedFeature")
                 };
+
+            features.Add(new EstablishedFeatureToggle("establishedFeature"));
+
+           
 
             Console.WriteLine(features.WhatDoIHave());
         }

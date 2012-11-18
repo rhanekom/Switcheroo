@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace Switcheroo.Configuration
+﻿namespace Switcheroo.Configuration
 {
+    using System;
     using System.Configuration;
 
     /// <summary>
@@ -28,7 +27,7 @@ namespace Switcheroo.Configuration
         /// <value>
         ///   <c>true</c> if enabled; otherwise, <c>false</c>.
         /// </value>
-        [ConfigurationProperty("enabled", IsRequired = true, IsKey = false)]
+        [ConfigurationProperty("enabled", IsRequired = false, DefaultValue = false, IsKey = false)]
         public bool Enabled
         {
             get { return (bool)this["enabled"]; }
@@ -46,6 +45,19 @@ namespace Switcheroo.Configuration
         {
             get { return (bool)this["mutable"]; }
             set { this["mutable"] = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this feature is established.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this feature is established; otherwise, <c>false</c>.
+        /// </value>
+        [ConfigurationProperty("established", IsRequired = false, DefaultValue = false, IsKey = false)]
+        public bool IsEstablished
+        {
+            get { return (bool)this["established"]; }
+            set { this["established"] = value; }
         }
 
         /// <summary>

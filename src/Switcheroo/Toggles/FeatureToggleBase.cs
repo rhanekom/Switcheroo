@@ -62,7 +62,7 @@ namespace Switcheroo.Toggles
         {
             var sb = new StringBuilder();
             sb.AppendLine(WriteProperty("Name", Name));
-            sb.AppendLine(WriteProperty("IsEnabled", IsEnabled().ToString()));
+            sb.AppendLine(WriteProperty("IsEnabled", GetEnabledValue()));
             return sb.ToString();
         }
 
@@ -84,6 +84,15 @@ namespace Switcheroo.Toggles
             value = value.PrepareForDisplay(maxLength, false);
 
             return string.Format("{0}\t{1}", name, value);
+        }
+
+        /// <summary>
+        /// Gets the enabled value to display.
+        /// </summary>
+        /// <returns>Gets the value indicating whether this item is enabled for display purposes.</returns>
+        protected virtual string GetEnabledValue()
+        {
+            return IsEnabled().ToString();
         }
 
         #endregion

@@ -39,6 +39,12 @@
             Assert.IsFalse(GetToggle("testImmutable").IsMutable);
         }
 
+        [Test]
+        public void Can_Provide_Established_Items()
+        {
+            Assert.IsTrue(GetToggle("testEstablished").IsEstablished);
+        }
+
         #endregion
 
         #region Private Members

@@ -57,6 +57,8 @@ Toggle types
 
 **Boolean (true/false)**
 
+Feature toggles based on a static binary value - either on or off.
+
 ```c#
 features.Add(new BooleanToggle("Feature1", true));
 ```
@@ -71,6 +73,8 @@ features.Add(new BooleanToggle("Feature1", true));
 ```
 
 **Date Range (true/false, within date range)**
+
+Date Range feature toggles are evaluated on both the binary enabled value and the current date.
 
 ```c#
 features.Add(new DateRangeToggle("Feature2", true, DateTime.Now.AddDays(5), null));
@@ -87,6 +91,24 @@ features.Add(new DateRangeToggle("Feature2", true, DateTime.Now.AddDays(5), null
  </features>
 ```
 _From_ and _until_ dates can be any valid date format parseable by _DateTime.Parse_.
+
+
+**Established features**
+
+Marking a feature toggle as established makes the feature toggle throw a _FeatureEstablishedException_ exception to make sure that it is not queried any more.  
+
+```c#
+features.Add(new EstablishedFeatureToggle("establishedFeature"));
+```
+
+```xml
+<features>
+    <toggles>
+      <add name="EstablishedFeature" established="true"/>
+    </toggles>
+ </features>
+```
+
 
 Other features  
 ----------------

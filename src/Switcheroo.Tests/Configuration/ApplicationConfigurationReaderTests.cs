@@ -101,5 +101,16 @@
             Assert.AreEqual(11, feature.EnabledToDate.Value.Month);
             Assert.AreEqual(2, feature.EnabledToDate.Value.Day);
         }
+
+        [Test]
+        public void Read_Returns_Established_Toggle_If_Feature_Is_Established()
+        {
+            var reader = new ApplicationConfigurationReader();
+            List<IFeatureToggle> features = reader.GetFeatures().ToList();
+
+            var feature = features.Single(x => x.Name == "testEstablished") as EstablishedFeatureToggle;
+
+            Assert.IsNotNull(feature);
+        }
     }
 }
