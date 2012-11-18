@@ -44,5 +44,62 @@
             feature = features.Single(x => x.Name == "testSimpleEnabled");
             Assert.IsInstanceOf<MutableToggle>(feature);
         }
+
+        [Test]
+        public void Read_Returns_DateRange_Toggles_If_Dates_Have_Been_Specified()
+        {
+            var reader = new ApplicationConfigurationReader();
+            List<IFeatureToggle> features = reader.GetFeatures().ToList();
+
+            var feature = features.Single(x => x.Name == "testDateRange") as DateRangeToggle;
+            
+            Assert.IsNotNull(feature);
+
+            Assert.IsNotNull(feature.EnabledFromDate);
+            Assert.AreEqual(2012, feature.EnabledFromDate.Value.Year);
+            Assert.AreEqual(11, feature.EnabledFromDate.Value.Month);
+            Assert.AreEqual(1, feature.EnabledFromDate.Value.Day);
+
+            Assert.IsNotNull(feature.EnabledToDate);
+            Assert.AreEqual(2012, feature.EnabledToDate.Value.Year);
+            Assert.AreEqual(11, feature.EnabledToDate.Value.Month);
+            Assert.AreEqual(2, feature.EnabledToDate.Value.Day);
+        }
+
+        [Test]
+        public void Read_Returns_DateRange_Toggles_If_Only_From_Date_Has_Been_Specified()
+        {
+            var reader = new ApplicationConfigurationReader();
+            List<IFeatureToggle> features = reader.GetFeatures().ToList();
+
+            var feature = features.Single(x => x.Name == "testDateRangeFromOnly") as DateRangeToggle;
+
+            Assert.IsNotNull(feature);
+
+            Assert.IsNotNull(feature.EnabledFromDate);
+            Assert.AreEqual(2012, feature.EnabledFromDate.Value.Year);
+            Assert.AreEqual(11, feature.EnabledFromDate.Value.Month);
+            Assert.AreEqual(1, feature.EnabledFromDate.Value.Day);
+
+            Assert.IsNull(feature.EnabledToDate);
+        }
+
+        [Test]
+        public void Read_Returns_DateRange_Toggles_If_Only_To_Date_Has_Been_Specified()
+        {
+            var reader = new ApplicationConfigurationReader();
+            List<IFeatureToggle> features = reader.GetFeatures().ToList();
+
+            var feature = features.Single(x => x.Name == "testDateRangeUntilOnly") as DateRangeToggle;
+
+            Assert.IsNotNull(feature);
+
+            Assert.IsNull(feature.EnabledFromDate);
+
+            Assert.IsNotNull(feature.EnabledToDate);
+            Assert.AreEqual(2012, feature.EnabledToDate.Value.Year);
+            Assert.AreEqual(11, feature.EnabledToDate.Value.Month);
+            Assert.AreEqual(2, feature.EnabledToDate.Value.Day);
+        }
     }
 }

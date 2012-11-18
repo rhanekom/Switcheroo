@@ -1,4 +1,6 @@
-﻿namespace Switcheroo.Configuration
+﻿using System;
+
+namespace Switcheroo.Configuration
 {
     using System.Configuration;
 
@@ -44,6 +46,32 @@
         {
             get { return (bool)this["mutable"]; }
             set { this["mutable"] = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the date that this feature should be turned on.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is immutable; otherwise, <c>false</c>.
+        /// </value>
+        [ConfigurationProperty("from", IsRequired = false, DefaultValue = null, IsKey = false)]
+        public DateTime? FromDate
+        {
+            get { return (DateTime?)this["from"]; }
+            set { this["from"] = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the date that this feature should be turned off.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is immutable; otherwise, <c>false</c>.
+        /// </value>
+        [ConfigurationProperty("until", IsRequired = false, DefaultValue = null, IsKey = false)]
+        public DateTime? ToDate
+        {
+            get { return (DateTime?)this["until"]; }
+            set { this["until"] = value; }
         }
     }
 }

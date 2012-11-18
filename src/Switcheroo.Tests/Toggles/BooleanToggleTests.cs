@@ -38,6 +38,16 @@
             Assert.AreEqual(TestName, toggle.Name);
         }
 
+        [Test]
+        public void ToString_Outputs_Object_State()
+        {
+            var toggle = new BooleanToggle(TestName, true);
+            string output = toggle.ToString();
+
+            StringAssert.Contains(TestName, output);
+            StringAssert.Contains(bool.TrueString, output);
+        }
+
         #endregion
     }
 }

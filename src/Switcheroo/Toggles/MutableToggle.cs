@@ -3,7 +3,7 @@
     /// <summary>
     /// A feature toggle whose state cannot be changed.
     /// </summary>
-    public class MutableToggle : BooleanToggle
+    public class MutableToggle : StaticFeatureToggleBase
     {
         #region Construction
 

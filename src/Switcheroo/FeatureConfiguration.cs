@@ -2,6 +2,7 @@ namespace Switcheroo
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using Configuration;
 
@@ -97,25 +98,12 @@ namespace Switcheroo
         /// </returns>
         public string WhatDoIHave()
         {
-            const string tabs = "\t\t\t";
-
             var sb = new StringBuilder();
             
-            sb.Append("Name");
-            sb.Append(tabs);
-            sb.AppendLine("IsEnabled");
-
-            sb.Append("----");
-            sb.Append(tabs);
-            sb.AppendLine("---------");
-            
-
-            foreach (var featureToggle in features)
+            foreach (var instance in this.OrderBy(x => x.Name))
             {
-                var feature = featureToggle.Value;
-                sb.Append(feature.Name);
-                sb.Append(tabs);
-                sb.AppendLine(feature.IsEnabled().ToString());
+                sb.AppendLine(instance.ToString());
+                sb.AppendLine();
             }
 
             return sb.ToString();

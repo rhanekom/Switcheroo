@@ -66,6 +66,11 @@ namespace Switcheroo.Configuration
 
         private IFeatureToggle ConvertToFeatureToggle(ToggleConfig config)
         {
+            if ((config.FromDate != null) || (config.ToDate != null))
+            {
+                return new DateRangeToggle(config.Name, config.Enabled, config.FromDate, config.ToDate);
+            }
+
             if (config.IsMutable)
             {
                 return new MutableToggle(config.Name, config.Enabled);
