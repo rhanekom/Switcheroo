@@ -22,26 +22,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-namespace Switcheroo
+namespace Switcheroo.Toggles
 {
-    using System;
-    using Configuration;
+    using System.Collections.Generic;
 
     /// <summary>
-    /// An expression dedicated to configuring feature toggles.
+    /// A toggle that has other toggle as dependencies.
     /// </summary>
-    public interface IConfigurationExpression
+    public interface IDependencyFeatureToggle : IFeatureToggle
     {
         /// <summary>
-        /// Initializes the feature configuration from application configuration.
+        /// Gets the dependencies of this feature toggle.
         /// </summary>
-        void FromApplicationConfig();
-
-        /// <summary>
-        /// Initializes the feature configuration from specified configuration reader.
-        /// </summary>
-        /// <param name="reader">The reader.</param>
-        /// <exception cref="ArgumentNullException">If <paramref name="reader"/> is <c>null</c>.</exception>
-        void FromSource(IConfigurationReader reader);
+        /// <value>
+        /// The dependencies of this feature toggle.
+        /// </value>
+        IEnumerable<IFeatureToggle> Dependencies { get; }
     }
 }

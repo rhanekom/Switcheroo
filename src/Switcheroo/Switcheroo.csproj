@@ -32,6 +32,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Switcheroo.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -65,9 +66,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Toggles\BooleanToggle.cs" />
     <Compile Include="Toggles\DateRangeToggle.cs" />
+    <Compile Include="Toggles\DependencyToggle.cs" />
     <Compile Include="Toggles\DynamicFeatureToggleBase.cs" />
     <Compile Include="Toggles\FeatureEstablishedException.cs" />
     <Compile Include="Toggles\EstablishedFeatureToggle.cs" />
+    <Compile Include="Toggles\IDependencyFeatureToggle.cs" />
     <Compile Include="Toggles\MutableToggle.cs" />
     <Compile Include="Toggles\FeatureToggleBase.cs" />
     <Compile Include="Toggles\StaticFeatureToggleBase.cs" />
