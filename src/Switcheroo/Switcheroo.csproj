@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\PersistentList.cs" />
     <Compile Include="Configuration\ConfigurationExpression.cs" />
     <Compile Include="Configuration\ApplicationConfigurationReader.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

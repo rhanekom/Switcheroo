@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\PersistentListTests.cs" />
     <Compile Include="Configuration\ApplicationConfigurationReaderTests.cs" />
     <Compile Include="Configuration\FeatureToggleConfigurationTests.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
