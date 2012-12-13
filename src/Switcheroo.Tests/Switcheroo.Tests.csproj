@@ -60,6 +60,7 @@
     <Compile Include="Collections\PersistentListTests.cs" />
     <Compile Include="Configuration\ApplicationConfigurationReaderTests.cs" />
     <Compile Include="Configuration\FeatureToggleConfigurationTests.cs" />
+    <Compile Include="Exceptions\CircularDependencyException.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
     <Compile Include="FeatureConfigurationTests.cs" />
     <Compile Include="FeaturesTests.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Toggles\DateRangeToggleTests.cs" />
     <Compile Include="Toggles\DependencyToggleTests.cs" />
     <Compile Include="Toggles\EstablishedFeatureToggleTests.cs" />
+    <Compile Include="Toggles\LocateByNameStrategyTests.cs" />
     <Compile Include="Toggles\MutableToggleTests.cs" />
   </ItemGroup>
   <ItemGroup>

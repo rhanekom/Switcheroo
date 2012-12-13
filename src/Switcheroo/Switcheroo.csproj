@@ -72,6 +72,8 @@
     <Compile Include="Toggles\FeatureEstablishedException.cs" />
     <Compile Include="Toggles\EstablishedFeatureToggle.cs" />
     <Compile Include="Toggles\IDependencyFeatureToggle.cs" />
+    <Compile Include="Toggles\ILocatorStrategy.cs" />
+    <Compile Include="Toggles\LocatebyNameStrategy.cs" />
     <Compile Include="Toggles\MutableToggle.cs" />
     <Compile Include="Toggles\FeatureToggleBase.cs" />
     <Compile Include="Toggles\StaticFeatureToggleBase.cs" />

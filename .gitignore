@@ -110,3 +110,7 @@ UpgradeLog*.XML
 # Nuget packages
 src\[Pp]ackages
 *.nupkg
+
+Settings.StyleCop
+
+
