@@ -25,6 +25,7 @@ THE SOFTWARE.
 namespace Switcheroo
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
@@ -38,7 +39,7 @@ namespace Switcheroo
     {
         #region Globals
 
-        private readonly Dictionary<string, IFeatureToggle> features = new Dictionary<string, IFeatureToggle>();
+        private readonly ConcurrentDictionary<string, IFeatureToggle> features = new ConcurrentDictionary<string, IFeatureToggle>();
 
         #endregion
 
@@ -71,7 +72,7 @@ namespace Switcheroo
                 throw new ArgumentNullException("toggle");
             }
 
-            features.Add(toggle.Name, toggle);
+            features.AddOrUpdate(toggle.Name, toggle, (key, value) => toggle);
         }
 
         /// <summary>
@@ -110,6 +111,7 @@ namespace Switcheroo
                 throw new ArgumentNullException("configuration");
             }
 
+            features.Clear();
             var expression = new ConfigurationExpression(this);
             configuration(expression);
         }

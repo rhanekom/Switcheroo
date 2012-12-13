@@ -39,13 +39,13 @@ Nuget packages can be found [here](https://www.nuget.org/packages/Switcheroo).
 **Initializing the library**
 
 ```c#
-Feature.Initialize(x => x.FromApplicationConfig());
+Features.Initialize(x => x.FromApplicationConfig());
 ```
 
 **Checking feature status**
 
 ```c#
-if (Feature.IsEnabled("Log.InColor"))
+if (Features.IsEnabled("Log.InColor"))
 {
 	// Implement feature
 }
