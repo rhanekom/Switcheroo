@@ -22,8 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+using System;
+
 namespace Switcheroo.Tests.Toggles
 {
+    using System.Linq;
     using NUnit.Framework;
     using Switcheroo.Toggles;
 
@@ -41,7 +44,7 @@ namespace Switcheroo.Tests.Toggles
         [Test]
         public void Construction_Saves_Name()
         {
-            var toggle = new DependencyToggle(ToggleName, true, new IFeatureToggle[0]);
+            var toggle = new DependencyToggle(new BooleanToggle(ToggleName, true), new IFeatureToggle[0]);
             Assert.AreEqual(ToggleName, toggle.Name);
         }
 
@@ -50,21 +53,21 @@ namespace Switcheroo.Tests.Toggles
         {
             var toggles = new IFeatureToggle[] { new BooleanToggle("a", true), new BooleanToggle("b", true) };
             
-            var toggle = new DependencyToggle(ToggleName, true, toggles);
+            var toggle = new DependencyToggle(new BooleanToggle(ToggleName, true), toggles);
             CollectionAssert.AreEquivalent(toggles, toggle.Dependencies);
         }
 
         [Test]
         public void Evaluate_Returns_False_If_Disabled()
         {
-            var toggle = new DependencyToggle(ToggleName, false, new IFeatureToggle[0]);
+            var toggle = new DependencyToggle(new BooleanToggle(ToggleName, false), new IFeatureToggle[0]);
             Assert.IsFalse(toggle.IsEnabled());
         }
 
         [Test]
         public void Evaluate_Returns_True_If_Enabled_With_No_Dependencies()
         {
-            var toggle = new DependencyToggle(ToggleName, true, new IFeatureToggle[0]);
+            var toggle = new DependencyToggle(new BooleanToggle(ToggleName, true), new IFeatureToggle[0]);
             Assert.IsTrue(toggle.IsEnabled());
         }
 
@@ -73,7 +76,7 @@ namespace Switcheroo.Tests.Toggles
         {
             var toggles = new IFeatureToggle[] { new BooleanToggle("a", true), new BooleanToggle("b", false) };
             
-            var toggle = new DependencyToggle(ToggleName, true, toggles);
+            var toggle = new DependencyToggle(new BooleanToggle(ToggleName, true), toggles);
             Assert.IsFalse(toggle.IsEnabled());
         }
 
@@ -82,8 +85,35 @@ namespace Switcheroo.Tests.Toggles
         {
             var toggles = new IFeatureToggle[] { new BooleanToggle("a", true), new BooleanToggle("b", true) };
             
-            var toggle = new DependencyToggle(ToggleName, true, toggles);
+            var toggle = new DependencyToggle(new BooleanToggle(ToggleName, true), toggles);
             Assert.IsTrue(toggle.IsEnabled());
+        }
+
+        [Test]
+        public void Can_Add_Dependencies_To_Toggle()
+        {
+            var toggle = new DependencyToggle(new BooleanToggle(ToggleName, true));
+
+            Assert.IsFalse(toggle.Dependencies.Any());
+
+            var dependency = new BooleanToggle("a", true);
+            toggle.AddDependency(dependency);
+
+            Assert.IsTrue(toggle.Dependencies.Any());
+            Assert.AreSame(toggle.Dependencies.Single(), dependency);
+        }
+
+        // TODO: Handle circular dependencies
+        [Test]
+        [Ignore]
+        public void CircularDependency_Will_Throw_StackOverflow_Exception()
+        {
+            var toggle1 = new DependencyToggle(new BooleanToggle(ToggleName, true));
+            var toggle2 = new DependencyToggle(new BooleanToggle(ToggleName, true));
+            toggle1.AddDependency(toggle2);
+            toggle2.AddDependency(toggle1);
+
+            Assert.Throws<StackOverflowException>(() => toggle1.IsEnabled());
         }
 
         #endregion

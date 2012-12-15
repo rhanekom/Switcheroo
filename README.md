@@ -1,12 +1,18 @@
 Switcheroo
-========
+==========
 
 A lightweight framework for [feature toggling](http://martinfowler.com/bliki/FeatureToggle.html) to enable trunk based development.
 
-Why not library X?
--------------------
-
 Switcheroo aims for simplicity, with a clean syntax and a minimal feature set while not compromising on extensibility and testability.
+
+Getting Switcheroo
+------------------
+
+Switcheroo can be installed via [Nuget][http://nuget.org/packages/Switcheroo].
+
+```powershell
+> Install-Package Switcheroo 
+```
 
 License
 --------
@@ -47,7 +53,7 @@ Features.Initialize(x => x.FromApplicationConfig());
 ```c#
 if (Features.IsEnabled("Log.InColor"))
 {
-	// Implement feature
+    // Implement feature
 }
 ```
 
@@ -109,6 +115,32 @@ features.Add(new EstablishedFeatureToggle("establishedFeature"));
  </features>
 ```
 
+**Dependencies**
+
+Features can depend on other features.  For instance, it is sometimes convenient to have a "main" feature, and then sub-features that depend on it.  Dependencies can be specified in configuration as a comma delimited list.
+
+_Note: Circular dependencies are not yet detected and will result in a StackOverflowException being thrown._
+
+```c#
+var mainFeature = new BooleanToggle("mainFeature", true);
+var subFeature1 = new BooleanToggle("subFeature1", true);
+var subFeature2 = new BooleanToggle("subFeature2", true);
+
+var dependency1 = new DependencyToggle(subFeature1, mainFeature);
+var dependency2 = new DependencyToggle(subFeature2, mainFeature);
+features.Add(dependency1);
+features.Add(dependency2);
+```
+
+```xml
+<features>
+    <toggles>
+        <add name="SubFeature1" enabled="true" dependencies="MainFeature"/>
+        <add name="SubFeature2" enabled="true" dependencies="MainFeature"/>
+        <add name="MainFeature" enabled="true" />
+    </toggles>
+ </features>
+```
 
 Other features  
 ----------------
@@ -117,14 +149,14 @@ Other features
 
 ```c#
 IFeatureConfiguration features = new FeatureConfiguration
-	{
-		new BooleanToggle("Feature1", true),
-		new DateRangeToggle(
-			"Feature2",
-			true,
-			DateTime.Now.AddDays(-2),
-			DateTime.Now.AddDays(3))
-	};
+    {
+        new BooleanToggle("Feature1", true),
+        new DateRangeToggle(
+            "Feature2",
+            true,
+            DateTime.Now.AddDays(-2),
+            DateTime.Now.AddDays(3))
+    };
 ```
 
 **IOC friendly through _IFeatureConfiguration_ instances, or the static _Feature.Instance_ backing instance**
@@ -150,3 +182,24 @@ Until         11/21/2012 3:32:23 PM
 ```
 
 **Loading from custom configuration resources :  build on top of _IConfigurationReader_**
+
+Version History
+---------------
+
+**v0.2.4730.37739**
+
+- Added DependencyToggle.
+- Changed from a Dictionary to a ConcurrenDictionary.
+
+**v0.2.4705.37094**
+
+- Added Established features.
+
+**v0.1.4705.28808**
+
+- Added DateRange toggle.
+- Quite a bit of internal refactoring.	
+
+**v0.1.4704.41742**
+
+- Initial version : simple toggles.

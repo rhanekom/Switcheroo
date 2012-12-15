@@ -112,5 +112,6 @@ src\[Pp]ackages
 *.nupkg
 
 Settings.StyleCop
+*.[Dd]otSettings
 
 

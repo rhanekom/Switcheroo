@@ -24,17 +24,19 @@ THE SOFTWARE.
 
 namespace Switcheroo.Toggles
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
     /// A toggle that has other feature toggles as dependencies.
     /// </summary>
-    public class DependencyToggle : DynamicFeatureToggleBase, IDependencyFeatureToggle
+    public class DependencyToggle : FeatureToggleBase, IDependencyFeatureToggle
     {
         #region Globals
 
-        private readonly IFeatureToggle[] dependencies;
+        private readonly IFeatureToggle innerToggle;
+        private readonly ConcurrentBag<IFeatureToggle> dependencies;
 
         #endregion
 
@@ -43,18 +45,26 @@ namespace Switcheroo.Toggles
         /// <summary>
         /// Initializes a new instance of the <see cref="DependencyToggle" /> class.
         /// </summary>
-        /// <param name="name">The name of this toggle.</param>
-        /// <param name="enabled">if set to <c>true</c> enable this toggle.</param>
-        /// <param name="dependencies">The feature toggles that this toggle depends on.</param>
-        public DependencyToggle(string name, bool enabled, params IFeatureToggle[] dependencies) 
-            : base(name, enabled)
+        /// <param name="innerToggle">The inner toggle for evaluation of this toggle.</param>
+        public DependencyToggle(IFeatureToggle innerToggle) : this(innerToggle, new IFeatureToggle[0])
         {
-            this.dependencies = dependencies;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DependencyToggle" /> class.
+        /// </summary>
+        /// <param name="innerToggle">The inner toggle for evaluation of this toggle.</param>
+        /// <param name="dependencies">The feature toggles that this toggle depends on.</param>
+        public DependencyToggle(IFeatureToggle innerToggle, params IFeatureToggle[] dependencies) 
+            : base(innerToggle.Name)
+        {
+            this.innerToggle = innerToggle;
+            this.dependencies = new ConcurrentBag<IFeatureToggle>(dependencies);
         }
 
         #endregion
 
-        #region DynamicFeatureToggleBase
+        #region DynamicFeatureToggleBase Members
 
         /// <summary>
         /// Evaluates the dynamic rules for this instance to determine whether it is enabled.
@@ -62,14 +72,23 @@ namespace Switcheroo.Toggles
         /// <returns>
         /// An indication of whether this feature toggle instance is enabled.
         /// </returns>
-        protected override bool Evaluate()
+        public override bool IsEnabled()
         {
-            return dependencies.All(x => x.IsEnabled());
+            return (innerToggle == null || innerToggle.IsEnabled()) && dependencies.All(x => x.IsEnabled());
         }
 
         #endregion
 
         #region Public Members
+
+        /// <summary>
+        /// Adds the specified feature toggle as a dependency to this one.
+        /// </summary>
+        /// <param name="toggle">The toggle to add as a dependency.</param>
+        public void AddDependency(IFeatureToggle toggle)
+        {
+            dependencies.Add(toggle);
+        }
 
         /// <summary>
         /// Gets the dependencies of this feature toggle.

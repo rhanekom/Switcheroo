@@ -29,7 +29,7 @@ namespace Switcheroo.Configuration
     /// <summary>
     /// The main configuration section for setting up feature toggles.
     /// </summary>
-    public class FeatureToggleConfiguration : ConfigurationSection
+    public class FeatureToggleConfiguration : ConfigurationSection, IFeatureToggleConfiguration
     {
         /// <summary>
         /// Gets the toggles contained in this configuration section.

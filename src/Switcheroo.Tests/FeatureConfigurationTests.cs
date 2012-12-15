@@ -58,6 +58,22 @@ namespace Switcheroo.Tests
         }
 
         [Test]
+        public void Add_Replaces_Feature_With_Name()
+        {
+            var configuration = new FeatureConfiguration();
+
+            var original = new BooleanToggle(TestFeatureName, false);
+            var expected = new BooleanToggle(TestFeatureName, true);
+            
+            configuration.Add(original);
+            configuration.Add(expected);
+
+            var actual = configuration.Get(TestFeatureName);
+
+            Assert.AreSame(expected, actual);
+        }
+
+        [Test]
         public void Add_Throws_For_Null_Toggles()
         {
             var configuration = new FeatureConfiguration();

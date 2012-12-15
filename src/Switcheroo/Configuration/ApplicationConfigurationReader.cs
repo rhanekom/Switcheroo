@@ -38,7 +38,7 @@ namespace Switcheroo.Configuration
     {
         #region Globals
 
-        private readonly Func<FeatureToggleConfiguration> reader;
+        private readonly Func<IFeatureToggleConfiguration> reader;
 
         #endregion
 
@@ -48,7 +48,7 @@ namespace Switcheroo.Configuration
         /// Initializes a new instance of the <see cref="ApplicationConfigurationReader" /> class.
         /// </summary>
         public ApplicationConfigurationReader() 
-            : this(() => ConfigurationManager.GetSection("features") as FeatureToggleConfiguration)
+            : this(() => ConfigurationManager.GetSection("features") as IFeatureToggleConfiguration)
         {
         }
 
@@ -56,7 +56,7 @@ namespace Switcheroo.Configuration
         /// Initializes a new instance of the <see cref="ApplicationConfigurationReader" /> class.
         /// </summary>
         /// <param name="reader">A function that retrieves the confiration section that needs to be read.</param>
-        public ApplicationConfigurationReader(Func<FeatureToggleConfiguration> reader)
+        public ApplicationConfigurationReader(Func<IFeatureToggleConfiguration> reader)
         {
             this.reader = reader;
         }
@@ -78,10 +78,47 @@ namespace Switcheroo.Configuration
                 return Enumerable.Empty<IFeatureToggle>();
             }
 
-            return configuration
-                .Toggles
-                .Cast<ToggleConfig>()
-                .Select(ConvertToFeatureToggle);
+            Dictionary<string, KeyValuePair<ToggleConfig, IFeatureToggle>> toggles =
+                configuration
+                    .Toggles
+                    .Cast<ToggleConfig>()
+                    .ToDictionary(x => x.Name, x => new KeyValuePair<ToggleConfig, IFeatureToggle>(x, ConvertToFeatureToggle(x)));
+
+            return BuildDependencies(toggles);
+        }
+
+        private IEnumerable<IFeatureToggle> BuildDependencies(Dictionary<string, KeyValuePair<ToggleConfig, IFeatureToggle>> toggles)
+        {
+            foreach (var t in toggles)
+            {
+                ToggleConfig config = t.Value.Key;
+                IFeatureToggle toggle = t.Value.Value;
+
+                if (string.IsNullOrEmpty(config.Dependencies))
+                {
+                    yield return toggle;
+                }
+                else
+                {
+                    var dependencyNames = config.Dependencies.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    yield return new DependencyToggle(toggle, BuildDependencies(toggles, dependencyNames).ToArray());
+                }
+            }
+        }
+
+        private IEnumerable<IFeatureToggle> BuildDependencies(Dictionary<string, KeyValuePair<ToggleConfig, IFeatureToggle>> toggles, IEnumerable<string> dependencyNames)
+        {
+            foreach (var dependencyName in dependencyNames)
+            {
+                KeyValuePair<ToggleConfig, IFeatureToggle> dependency;
+
+                if (!toggles.TryGetValue(dependencyName, out dependency))
+                {
+                    throw new ConfigurationErrorsException("Could not find dependency with name \"" + dependencyName + "\".");
+                }
+
+                yield return dependency.Value;
+            }
         }
 
         #endregion
@@ -90,22 +127,26 @@ namespace Switcheroo.Configuration
 
         private IFeatureToggle ConvertToFeatureToggle(ToggleConfig config)
         {
+            IFeatureToggle toggle;
+
             if (config.IsEstablished)
             {
-                return new EstablishedFeatureToggle(config.Name);
+                toggle = new EstablishedFeatureToggle(config.Name);
+            }
+            else if ((config.FromDate != null) || (config.ToDate != null))
+            {
+                toggle = new DateRangeToggle(config.Name, config.Enabled, config.FromDate, config.ToDate);
+            }
+            else if (config.IsMutable)
+            {
+                toggle = new MutableToggle(config.Name, config.Enabled);
+            }
+            else
+            {
+                toggle = new BooleanToggle(config.Name, config.Enabled);
             }
 
-            if ((config.FromDate != null) || (config.ToDate != null))
-            {
-                return new DateRangeToggle(config.Name, config.Enabled, config.FromDate, config.ToDate);
-            }
-
-            if (config.IsMutable)
-            {
-                return new MutableToggle(config.Name, config.Enabled);
-            }
-            
-            return new BooleanToggle(config.Name, config.Enabled);
+            return toggle;
         }
 
         #endregion

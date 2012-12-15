@@ -109,5 +109,19 @@ namespace Switcheroo.Configuration
             get { return (DateTime?)this["until"]; }
             set { this["until"] = value; }
         }
+
+        /// <summary>
+        /// Gets or sets the dependencies.
+        /// </summary>
+        /// <value>
+        /// The dependencies.
+        /// </value>
+        [ConfigurationProperty("dependencies", IsRequired = false, DefaultValue = null, IsKey = false)]
+        public string Dependencies
+        {
+            get { return (string)this["dependencies"]; }
+            set { this["dependencies"] = value; }
+        }
+
     }
 }

@@ -42,9 +42,16 @@ namespace Switcheroo.Samples
                     new EstablishedFeatureToggle("establishedFeature")
                 };
 
-            features.Add(new EstablishedFeatureToggle("establishedFeature"));
+            var mainFeature = new BooleanToggle("mainFeature", true);
+            var subFeature1 = new BooleanToggle("subFeature1", true);
+            var subFeature2 = new BooleanToggle("subFeature2", true);
 
-           
+            var dependency1 = new DependencyToggle(subFeature1, mainFeature);
+            var dependency2 = new DependencyToggle(subFeature2, mainFeature);
+            features.Add(dependency1);
+            features.Add(dependency2);
+
+            features.Add(new EstablishedFeatureToggle("establishedFeature"));
 
             Console.WriteLine(features.WhatDoIHave());
         }

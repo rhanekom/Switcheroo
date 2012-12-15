@@ -54,6 +54,7 @@
     <Compile Include="Collections\PersistentList.cs" />
     <Compile Include="Configuration\ConfigurationExpression.cs" />
     <Compile Include="Configuration\ApplicationConfigurationReader.cs" />
+    <Compile Include="Configuration\IFeatureToggleConfiguration.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IConfigurationExpression.cs" />
     <Compile Include="Configuration\FeatureToggleConfiguration.cs" />

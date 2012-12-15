@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+using System.Configuration;
+
 namespace Switcheroo.Tests.Configuration
 {
     using System.Collections.Generic;
@@ -135,6 +137,51 @@ namespace Switcheroo.Tests.Configuration
             var feature = features.Single(x => x.Name == "testEstablished") as EstablishedFeatureToggle;
 
             Assert.IsNotNull(feature);
+        }
+
+        [Test]
+        public void Read_Returns_Dependency_Toggles()
+        {
+            var reader = new ApplicationConfigurationReader();
+            
+            List<IFeatureToggle> features = reader.GetFeatures().ToList();
+            var feature = features.Single(x => x.Name == "testDependencies") as DependencyToggle;
+
+            Assert.IsNotNull(feature);
+
+            IEnumerable<IFeatureToggle> dependencies = feature.Dependencies.ToList();
+
+            Assert.AreEqual(2, dependencies.Count());
+            Assert.IsTrue(dependencies.Any(x => x.Name == "testSimpleEnabled"));
+            Assert.IsTrue(dependencies.Any(x => x.Name == "testImmutable"));
+        }
+
+        [Test]
+        public void Read_Throws_Configuration_Exception_For_Unknown_Tasks_In_Dependencies()
+        {
+            var reader = new ApplicationConfigurationReader(() => new DummyToggleConfig
+                {
+                    Toggles = new FeatureToggleCollection()
+                        {
+                            new ToggleConfig
+                                {
+                                    Name = "a",
+                                    Dependencies = "b,d"
+                                },
+                            new ToggleConfig
+                                {
+                                    Name = "b"
+                                },
+                            new ToggleConfig
+                                {
+                                    Name = "c"
+                                },
+                        }
+                });
+
+            // ReSharper disable ReturnValueOfPureMethodIsNotUsed
+            Assert.Throws<ConfigurationErrorsException>(() => reader.GetFeatures().ToList());
+            // ReSharper restore ReturnValueOfPureMethodIsNotUsed
         }
     }
 }

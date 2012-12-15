@@ -32,6 +32,12 @@ namespace Switcheroo.Toggles
     public interface IDependencyFeatureToggle : IFeatureToggle
     {
         /// <summary>
+        /// Adds the specified feature toggle as a dependency to this one.
+        /// </summary>
+        /// <param name="toggle">The toggle to add as a dependency.</param>
+        void AddDependency(IFeatureToggle toggle);
+
+        /// <summary>
         /// Gets the dependencies of this feature toggle.
         /// </summary>
         /// <value>
