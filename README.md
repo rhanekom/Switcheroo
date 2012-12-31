@@ -185,6 +185,10 @@ Until         11/21/2012 3:32:23 PM
 
 Version History
 ---------------
+**v0.3.4748.37146**
+
+- Configuration mechanism for DependencyToggle
+
 
 **v0.2.4730.37739**
 
