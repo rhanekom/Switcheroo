@@ -61,7 +61,6 @@
     <Compile Include="Configuration\ApplicationConfigurationReaderTests.cs" />
     <Compile Include="Configuration\DummyToggleConfig.cs" />
     <Compile Include="Configuration\FeatureToggleConfigurationTests.cs" />
-    <Compile Include="Exceptions\CircularDependencyException.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
     <Compile Include="FeatureConfigurationTests.cs" />
     <Compile Include="FeaturesTests.cs" />

@@ -103,17 +103,45 @@ namespace Switcheroo.Tests.Toggles
             Assert.AreSame(toggle.Dependencies.Single(), dependency);
         }
 
-        // TODO: Handle circular dependencies
         [Test]
-        [Ignore]
-        public void CircularDependency_Will_Throw_StackOverflow_Exception()
+        public void HasCycle_Returns_True_For_CircularDependency()
         {
             var toggle1 = new DependencyToggle(new BooleanToggle(ToggleName, true));
             var toggle2 = new DependencyToggle(new BooleanToggle(ToggleName, true));
             toggle1.AddDependency(toggle2);
             toggle2.AddDependency(toggle1);
 
-            Assert.Throws<StackOverflowException>(() => toggle1.IsEnabled());
+            Assert.IsTrue(toggle1.HasCycle());
+        }
+
+        [Test]
+        public void HasCycle_Returns_True_For_Second_Level_Circular_Dependency()
+        {
+            var toggle1 = new DependencyToggle(new BooleanToggle(ToggleName, true));
+            var toggle2 = new DependencyToggle(new BooleanToggle(ToggleName, true));
+            var toggle3 = new DependencyToggle(new BooleanToggle(ToggleName, true));
+            
+            toggle1.AddDependency(toggle2);
+            toggle2.AddDependency(toggle3);
+            toggle3.AddDependency(toggle1);
+
+            Assert.IsTrue(toggle1.HasCycle());
+        }
+
+        [Test]
+        public void HasCycle_Returns_False_For_Non_Circular_Dpendency()
+        {
+            var toggle1 = new DependencyToggle(new BooleanToggle(ToggleName, true));
+            var toggle2 = new DependencyToggle(new BooleanToggle(ToggleName, true));
+            var toggle3 = new DependencyToggle(new BooleanToggle(ToggleName, true));
+            var toggle4 = new BooleanToggle(ToggleName, true);
+ 
+            toggle1.AddDependency(toggle2);
+            toggle2.AddDependency(toggle3);
+            toggle2.AddDependency(toggle4);
+            toggle3.AddDependency(toggle4);
+
+            Assert.IsFalse(toggle1.HasCycle());
         }
 
         #endregion

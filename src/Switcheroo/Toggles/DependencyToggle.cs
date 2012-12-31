@@ -27,6 +27,7 @@ namespace Switcheroo.Toggles
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using Collections;
 
     /// <summary>
     /// A toggle that has other feature toggles as dependencies.
@@ -99,6 +100,59 @@ namespace Switcheroo.Toggles
         public IEnumerable<IFeatureToggle> Dependencies
         {
             get { return dependencies; }
+        }
+
+        /*
+         ← Set of all nodes with no incoming edges
+        for each node n in S do
+            visit(n) 
+        function visit(node n)
+            if n has not been visited yet then
+                mark n as visited
+                for each node m with an edge from n to m do
+                    visit(m)
+                add n to L
+            }
+         */
+
+        /// <summary>
+        /// Determines whether this instance has cyclic dependencies.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this instance has cyclic dependencies; otherwise, <c>false</c>.
+        /// </returns>
+        public bool HasCycle()
+        {
+            return HasCycle(null);
+        }
+
+        #endregion
+
+        #region Private Members
+
+        private bool HasCycle(PersistentList<IFeatureToggle> visitedToggles)
+        {
+            visitedToggles = visitedToggles == null 
+                ? new PersistentList<IFeatureToggle>(this, Enumerable.Empty<IFeatureToggle>()) 
+                : new PersistentList<IFeatureToggle>(this, visitedToggles);
+
+            foreach (var toggle in dependencies)
+            {
+                // Verify that this node has not been visited before
+                if (visitedToggles.Contains(toggle))
+                {
+                    return true;
+                }
+
+                var dependencyToggle = toggle as DependencyToggle;
+
+                if ((dependencyToggle != null) && dependencyToggle.HasCycle(visitedToggles))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #endregion

@@ -28,6 +28,7 @@ namespace Switcheroo.Configuration
     using System.Collections.Generic;
     using System.Configuration;
     using System.Linq;
+    using Exceptions;
     using Toggles;
 
     /// <summary>
@@ -78,13 +79,37 @@ namespace Switcheroo.Configuration
                 return Enumerable.Empty<IFeatureToggle>();
             }
 
+            var items = BuildToggles(configuration);
+
+            AssertNoCircularDependencies(items);
+
+            return items;
+        }
+
+        #endregion
+
+        #region Private Members
+
+        private static void AssertNoCircularDependencies(IEnumerable<IFeatureToggle> items)
+        {
+            var circularDependency = items.OfType<DependencyToggle>().FirstOrDefault(x => x.HasCycle());
+
+            if (circularDependency != null)
+            {
+                throw new CircularDependencyException(string.Format("Task {0} has a circular dependency.", circularDependency.Name));
+            }
+        }
+
+        private List<IFeatureToggle> BuildToggles(IFeatureToggleConfiguration configuration)
+        {
             Dictionary<string, KeyValuePair<ToggleConfig, IFeatureToggle>> toggles =
                 configuration
                     .Toggles
                     .Cast<ToggleConfig>()
                     .ToDictionary(x => x.Name, x => new KeyValuePair<ToggleConfig, IFeatureToggle>(x, ConvertToFeatureToggle(x)));
 
-            return BuildDependencies(toggles);
+            var items = BuildDependencies(toggles).ToList();
+            return items;
         }
 
         private IEnumerable<IFeatureToggle> BuildDependencies(Dictionary<string, KeyValuePair<ToggleConfig, IFeatureToggle>> toggles)
@@ -94,36 +119,33 @@ namespace Switcheroo.Configuration
                 ToggleConfig config = t.Value.Key;
                 IFeatureToggle toggle = t.Value.Value;
 
-                if (string.IsNullOrEmpty(config.Dependencies))
-                {
-                    yield return toggle;
-                }
-                else
+                var dependencyToggle = toggle as DependencyToggle;
+                
+                if (dependencyToggle != null)
                 {
                     var dependencyNames = config.Dependencies.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    yield return new DependencyToggle(toggle, BuildDependencies(toggles, dependencyNames).ToArray());
+                    BuildDependencies(dependencyToggle, toggles, dependencyNames);
                 }
+
+                yield return toggle;
             }
         }
 
-        private IEnumerable<IFeatureToggle> BuildDependencies(Dictionary<string, KeyValuePair<ToggleConfig, IFeatureToggle>> toggles, IEnumerable<string> dependencyNames)
+        private void BuildDependencies(DependencyToggle dependencyToggle, Dictionary<string, KeyValuePair<ToggleConfig, IFeatureToggle>> toggles, IEnumerable<string> dependencyNames)
         {
             foreach (var dependencyName in dependencyNames)
             {
+                string cleanName = dependencyName.Trim();
                 KeyValuePair<ToggleConfig, IFeatureToggle> dependency;
 
-                if (!toggles.TryGetValue(dependencyName, out dependency))
+                if (!toggles.TryGetValue(cleanName, out dependency))
                 {
-                    throw new ConfigurationErrorsException("Could not find dependency with name \"" + dependencyName + "\".");
+                    throw new ConfigurationErrorsException("Could not find dependency with name \"" + cleanName + "\".");
                 }
 
-                yield return dependency.Value;
+                dependencyToggle.AddDependency(dependency.Value);
             }
         }
-
-        #endregion
-
-        #region Private Members
 
         private IFeatureToggle ConvertToFeatureToggle(ToggleConfig config)
         {
@@ -146,7 +168,9 @@ namespace Switcheroo.Configuration
                 toggle = new BooleanToggle(config.Name, config.Enabled);
             }
 
-            return toggle;
+            return string.IsNullOrEmpty(config.Dependencies) 
+                ? toggle
+                : new DependencyToggle(toggle);
         }
 
         #endregion

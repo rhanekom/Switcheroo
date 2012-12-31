@@ -23,6 +23,7 @@ THE SOFTWARE.
 */
 
 using System.Configuration;
+using Switcheroo.Exceptions;
 
 namespace Switcheroo.Tests.Configuration
 {
@@ -155,6 +156,95 @@ namespace Switcheroo.Tests.Configuration
             Assert.IsTrue(dependencies.Any(x => x.Name == "testSimpleEnabled"));
             Assert.IsTrue(dependencies.Any(x => x.Name == "testImmutable"));
         }
+
+        [Test]
+        public void Read_Sets_Dependency_Toggle_Dependencies_To_The_Wrapped_DependencyToggle()
+        {
+            var reader = new ApplicationConfigurationReader(() => new DummyToggleConfig
+                {
+                    Toggles = new FeatureToggleCollection()
+                        {
+                            new ToggleConfig
+                                {
+                                    Name = "a",
+                                    Dependencies = "b"
+                                },
+                            new ToggleConfig
+                                {
+                                    Name = "b",
+                                    Dependencies = "c"
+                                },
+                            new ToggleConfig
+                                {
+                                    Name = "c"
+                                },
+                        }
+                });
+
+            var features = reader.GetFeatures().ToList();
+
+            Assert.IsInstanceOf<DependencyToggle>(features.OfType<DependencyToggle>().Single(x => x.Name == "a").Dependencies.Single());
+        }
+
+        [Test]
+        public void Read_Allows_For_Whitespace_In_Dependency_Configuration()
+        {   
+            var reader = new ApplicationConfigurationReader(() => new DummyToggleConfig
+                {
+                    Toggles = new FeatureToggleCollection()
+                        {
+                            new ToggleConfig
+                                {
+                                    Name = "a",
+                                    Dependencies = "b, c"
+                                },
+                            new ToggleConfig
+                                {
+                                    Name = "b"
+                                },
+                            new ToggleConfig
+                                {
+                                    Name = "c"
+                                },
+                        }
+                });
+
+            Assert.AreEqual(3, reader.GetFeatures().Count());
+        }
+
+        [Test]
+        public void Read_Throws_CircularDependecy_Exception_For_Circular_Dependencies()
+        {
+            var reader = new ApplicationConfigurationReader(() => new DummyToggleConfig
+                {
+                    Toggles = new FeatureToggleCollection()
+                        {
+                            new ToggleConfig
+                                {
+                                    Name = "a",
+                                    Dependencies = "b,d"
+                                },
+                            new ToggleConfig
+                                {
+                                    Name = "b"
+                                },
+                            new ToggleConfig
+                                {
+                                    Name = "c"
+                                },
+                            new ToggleConfig
+                                {
+                                    Name = "d",
+                                    Dependencies = "b, a"
+                                },
+                        }
+                });
+
+            // ReSharper disable ReturnValueOfPureMethodIsNotUsed
+            Assert.Throws<CircularDependencyException>(() => reader.GetFeatures().ToList());
+            // ReSharper restore ReturnValueOfPureMethodIsNotUsed
+        }
+
 
         [Test]
         public void Read_Throws_Configuration_Exception_For_Unknown_Tasks_In_Dependencies()

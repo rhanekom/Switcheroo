@@ -55,6 +55,7 @@
     <Compile Include="Configuration\ConfigurationExpression.cs" />
     <Compile Include="Configuration\ApplicationConfigurationReader.cs" />
     <Compile Include="Configuration\IFeatureToggleConfiguration.cs" />
+    <Compile Include="Exceptions\CircularDependencyException.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IConfigurationExpression.cs" />
     <Compile Include="Configuration\FeatureToggleConfiguration.cs" />
@@ -83,6 +84,7 @@
     <None Include="Switcheroo.nuspec" />
     <None Include="Switcheroo.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
