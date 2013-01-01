@@ -8,7 +8,7 @@ Switcheroo aims for simplicity, with a clean syntax and a minimal feature set wh
 Getting Switcheroo
 ------------------
 
-Switcheroo can be installed via [Nuget][http://nuget.org/packages/Switcheroo].
+Switcheroo can be installed via [Nuget](http://nuget.org/packages/Switcheroo).
 
 ```powershell
 > Install-Package Switcheroo 
