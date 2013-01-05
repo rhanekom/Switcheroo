@@ -28,7 +28,6 @@ namespace Switcheroo.Configuration
     using System.Collections.Generic;
     using System.Configuration;
     using System.Linq;
-    using Exceptions;
     using Toggles;
 
     /// <summary>
@@ -156,10 +155,6 @@ namespace Switcheroo.Configuration
             else if ((config.FromDate != null) || (config.ToDate != null))
             {
                 toggle = new DateRangeToggle(config.Name, config.Enabled, config.FromDate, config.ToDate);
-            }
-            else if (config.IsMutable)
-            {
-                toggle = new MutableToggle(config.Name, config.Enabled);
             }
             else
             {

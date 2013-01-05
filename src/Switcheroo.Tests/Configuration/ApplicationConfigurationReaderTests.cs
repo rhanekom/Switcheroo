@@ -40,7 +40,7 @@ namespace Switcheroo.Tests.Configuration
         {
             var reader = new ApplicationConfigurationReader(() => null);
             var features = reader.GetFeatures();
-            
+
             Assert.IsNotNull(features);
             CollectionAssert.IsEmpty(features);
         }
@@ -56,19 +56,6 @@ namespace Switcheroo.Tests.Configuration
 
             Assert.IsTrue(feature1.IsEnabled());
             Assert.IsFalse(feature2.IsEnabled());
-        }
-
-        [Test]
-        public void Read_Returns_Mutable_Toggles_If_Immutable()
-        {
-            var reader = new ApplicationConfigurationReader();
-            List<IFeatureToggle> features = reader.GetFeatures().ToList();
-
-            var feature = features.Single(x => x.Name == "testImmutable");
-            Assert.IsInstanceOf<BooleanToggle>(feature);
-
-            feature = features.Single(x => x.Name == "testSimpleEnabled");
-            Assert.IsInstanceOf<MutableToggle>(feature);
         }
 
         [Test]
@@ -153,7 +140,7 @@ namespace Switcheroo.Tests.Configuration
 
             Assert.AreEqual(2, dependencies.Count());
             Assert.IsTrue(dependencies.Any(x => x.Name == "testSimpleEnabled"));
-            Assert.IsTrue(dependencies.Any(x => x.Name == "testImmutable"));
+            Assert.IsTrue(dependencies.Any(x => x.Name == "testSimpleDisabled"));
         }
 
         [Test]

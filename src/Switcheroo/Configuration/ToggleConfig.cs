@@ -28,7 +28,7 @@ namespace Switcheroo.Configuration
     using System.Configuration;
 
     /// <summary>
-    /// A configuration element for the <see cref="FeatureToggleCollection"/>.
+    /// A configuration element for the <see cref="FeatureToggleCollection" />.
     /// </summary>
     public class ToggleConfig : ConfigurationElement
     {
@@ -59,19 +59,6 @@ namespace Switcheroo.Configuration
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is immutable.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is immutable; otherwise, <c>false</c>.
-        /// </value>
-        [ConfigurationProperty("mutable", IsRequired = false, DefaultValue = true, IsKey = false)]
-        public bool IsMutable
-        {
-            get { return (bool)this["mutable"]; }
-            set { this["mutable"] = value; }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether this feature is established.
         /// </summary>
         /// <value>
@@ -88,7 +75,7 @@ namespace Switcheroo.Configuration
         /// Gets or sets the date that this feature should be turned on.
         /// </summary>
         /// <value>
-        /// <c>true</c> if this instance is immutable; otherwise, <c>false</c>.
+        /// The date that this toggle should be enabled from.
         /// </value>
         [ConfigurationProperty("from", IsRequired = false, DefaultValue = null, IsKey = false)]
         public DateTime? FromDate
@@ -101,7 +88,7 @@ namespace Switcheroo.Configuration
         /// Gets or sets the date that this feature should be turned off.
         /// </summary>
         /// <value>
-        /// <c>true</c> if this instance is immutable; otherwise, <c>false</c>.
+        /// The date that this feature should be turned off..
         /// </value>
         [ConfigurationProperty("until", IsRequired = false, DefaultValue = null, IsKey = false)]
         public DateTime? ToDate

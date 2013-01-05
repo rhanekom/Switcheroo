@@ -57,13 +57,6 @@ namespace Switcheroo.Tests.Configuration
         }
 
         [Test]
-        public void Can_Provide_Immutable_Items()
-        {
-            Assert.IsTrue(GetToggle("testSimpleEnabled").IsMutable);
-            Assert.IsFalse(GetToggle("testImmutable").IsMutable);
-        }
-
-        [Test]
         public void Can_Provide_Established_Items()
         {
             Assert.IsTrue(GetToggle("testEstablished").IsEstablished);

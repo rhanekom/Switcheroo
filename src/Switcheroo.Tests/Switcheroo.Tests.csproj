@@ -70,7 +70,6 @@
     <Compile Include="Toggles\DependencyToggleTests.cs" />
     <Compile Include="Toggles\EstablishedFeatureToggleTests.cs" />
     <Compile Include="Toggles\LocateByNameStrategyTests.cs" />
-    <Compile Include="Toggles\MutableToggleTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
