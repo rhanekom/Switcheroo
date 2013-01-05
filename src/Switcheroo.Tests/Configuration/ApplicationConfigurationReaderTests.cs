@@ -22,13 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-using System.Configuration;
-using Switcheroo.Exceptions;
-
 namespace Switcheroo.Tests.Configuration
 {
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Linq;
+    using Exceptions;
     using NUnit.Framework;
     using Switcheroo.Configuration;
     using Switcheroo.Toggles;
@@ -162,7 +161,7 @@ namespace Switcheroo.Tests.Configuration
         {
             var reader = new ApplicationConfigurationReader(() => new DummyToggleConfig
                 {
-                    Toggles = new FeatureToggleCollection()
+                    Toggles = new FeatureToggleCollection
                         {
                             new ToggleConfig
                                 {
@@ -191,7 +190,7 @@ namespace Switcheroo.Tests.Configuration
         {   
             var reader = new ApplicationConfigurationReader(() => new DummyToggleConfig
                 {
-                    Toggles = new FeatureToggleCollection()
+                    Toggles = new FeatureToggleCollection
                         {
                             new ToggleConfig
                                 {
@@ -217,7 +216,7 @@ namespace Switcheroo.Tests.Configuration
         {
             var reader = new ApplicationConfigurationReader(() => new DummyToggleConfig
                 {
-                    Toggles = new FeatureToggleCollection()
+                    Toggles = new FeatureToggleCollection
                         {
                             new ToggleConfig
                                 {
@@ -245,13 +244,12 @@ namespace Switcheroo.Tests.Configuration
             // ReSharper restore ReturnValueOfPureMethodIsNotUsed
         }
 
-
         [Test]
         public void Read_Throws_Configuration_Exception_For_Unknown_Tasks_In_Dependencies()
         {
             var reader = new ApplicationConfigurationReader(() => new DummyToggleConfig
                 {
-                    Toggles = new FeatureToggleCollection()
+                    Toggles = new FeatureToggleCollection
                         {
                             new ToggleConfig
                                 {

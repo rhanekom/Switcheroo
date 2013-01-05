@@ -31,7 +31,7 @@ namespace Switcheroo.Exceptions
     /// Indicates that a toggle has a circular dependecy and will result in an error condition if evaluated.
     /// </summary>
     [Serializable]
-    public class CircularDependencyException : Exception
+    public class CircularDependencyException : InvalidConfigurationException 
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CircularDependencyException" /> class.

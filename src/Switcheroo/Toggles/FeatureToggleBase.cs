@@ -70,6 +70,14 @@ namespace Switcheroo.Toggles
         /// </returns>
         public abstract bool IsEnabled();
 
+        /// <summary>
+        /// Asserts that the configuration of this feautre toggle is valid.
+        /// </summary>
+        public virtual void AssertConfigurationIsValid()
+        {
+            // noop
+        }
+
         #endregion
 
         #region Object Members

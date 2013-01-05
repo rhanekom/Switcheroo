@@ -24,6 +24,8 @@ THE SOFTWARE.
 
 namespace Switcheroo
 {
+    using Exceptions;
+
     /// <summary>
     /// A toggle for a feature.
     /// </summary>
@@ -44,5 +46,11 @@ namespace Switcheroo
         ///   <c>true</c> if this instance is enabled; otherwise, <c>false</c>.
         /// </returns>
         bool IsEnabled();
+
+        /// <summary>
+        /// Asserts that the configuration of this feautre toggle is valid.
+        /// </summary>
+        /// <exception cref="InvalidConfigurationException">This toggle is in an invalid state to be evaulated.</exception>
+        void AssertConfigurationIsValid();
     }
 }

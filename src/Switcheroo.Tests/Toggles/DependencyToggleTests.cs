@@ -22,11 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-using System;
-
 namespace Switcheroo.Tests.Toggles
 {
     using System.Linq;
+    using Exceptions;
     using NUnit.Framework;
     using Switcheroo.Toggles;
 
@@ -104,18 +103,18 @@ namespace Switcheroo.Tests.Toggles
         }
 
         [Test]
-        public void HasCycle_Returns_True_For_CircularDependency()
+        public void AssertConfigurationIsValid_Throws_For_CircularDependency()
         {
             var toggle1 = new DependencyToggle(new BooleanToggle(ToggleName, true));
             var toggle2 = new DependencyToggle(new BooleanToggle(ToggleName, true));
             toggle1.AddDependency(toggle2);
             toggle2.AddDependency(toggle1);
 
-            Assert.IsTrue(toggle1.HasCycle());
+            Assert.Throws<CircularDependencyException>(toggle1.AssertConfigurationIsValid);
         }
 
         [Test]
-        public void HasCycle_Returns_True_For_Second_Level_Circular_Dependency()
+        public void AssertConfigurationIsValid_Throws_For_Second_Level_Circular_Dependency()
         {
             var toggle1 = new DependencyToggle(new BooleanToggle(ToggleName, true));
             var toggle2 = new DependencyToggle(new BooleanToggle(ToggleName, true));
@@ -125,11 +124,11 @@ namespace Switcheroo.Tests.Toggles
             toggle2.AddDependency(toggle3);
             toggle3.AddDependency(toggle1);
 
-            Assert.IsTrue(toggle1.HasCycle());
+            Assert.Throws<CircularDependencyException>(toggle1.AssertConfigurationIsValid);
         }
 
         [Test]
-        public void HasCycle_Returns_False_For_Non_Circular_Dpendency()
+        public void AssertConfigurationIsValid_Returns_False_For_Non_Circular_Dpendency()
         {
             var toggle1 = new DependencyToggle(new BooleanToggle(ToggleName, true));
             var toggle2 = new DependencyToggle(new BooleanToggle(ToggleName, true));
@@ -141,7 +140,7 @@ namespace Switcheroo.Tests.Toggles
             toggle2.AddDependency(toggle4);
             toggle3.AddDependency(toggle4);
 
-            Assert.IsFalse(toggle1.HasCycle());
+            Assert.DoesNotThrow(toggle1.AssertConfigurationIsValid);
         }
 
         #endregion

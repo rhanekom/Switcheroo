@@ -81,7 +81,7 @@ namespace Switcheroo.Configuration
 
             var items = BuildToggles(configuration);
 
-            AssertNoCircularDependencies(items);
+            AssertConfigurationValid(items);
 
             return items;
         }
@@ -90,13 +90,11 @@ namespace Switcheroo.Configuration
 
         #region Private Members
 
-        private static void AssertNoCircularDependencies(IEnumerable<IFeatureToggle> items)
+        private static void AssertConfigurationValid(IEnumerable<IFeatureToggle> items)
         {
-            var circularDependency = items.OfType<DependencyToggle>().FirstOrDefault(x => x.HasCycle());
-
-            if (circularDependency != null)
+            foreach (var item in items)
             {
-                throw new CircularDependencyException(string.Format("Task {0} has a circular dependency.", circularDependency.Name));
+                item.AssertConfigurationIsValid();
             }
         }
 

@@ -28,6 +28,7 @@ namespace Switcheroo.Toggles
     using System.Collections.Generic;
     using System.Linq;
     using Collections;
+    using Exceptions;
 
     /// <summary>
     /// A toggle that has other feature toggles as dependencies.
@@ -78,6 +79,17 @@ namespace Switcheroo.Toggles
             return (innerToggle == null || innerToggle.IsEnabled()) && dependencies.All(x => x.IsEnabled());
         }
 
+        /// <summary>
+        /// Asserts that the configuration of this feautre toggle is valid.
+        /// </summary>
+        public override void AssertConfigurationIsValid()
+        {
+            if (HasCycle())
+            {
+                throw new CircularDependencyException(string.Format("Circular dependency found for toggle {0} - will not be able to evaluate this toggle.", Name));
+            }
+        }
+
         #endregion
 
         #region Public Members
@@ -102,35 +114,11 @@ namespace Switcheroo.Toggles
             get { return dependencies; }
         }
 
-        /*
-         ← Set of all nodes with no incoming edges
-        for each node n in S do
-            visit(n) 
-        function visit(node n)
-            if n has not been visited yet then
-                mark n as visited
-                for each node m with an edge from n to m do
-                    visit(m)
-                add n to L
-            }
-         */
-
-        /// <summary>
-        /// Determines whether this instance has cyclic dependencies.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if this instance has cyclic dependencies; otherwise, <c>false</c>.
-        /// </returns>
-        public bool HasCycle()
-        {
-            return HasCycle(null);
-        }
-
         #endregion
 
         #region Private Members
 
-        private bool HasCycle(PersistentList<IFeatureToggle> visitedToggles)
+        private bool HasCycle(PersistentList<IFeatureToggle> visitedToggles = null)
         {
             visitedToggles = visitedToggles == null 
                 ? new PersistentList<IFeatureToggle>(this, Enumerable.Empty<IFeatureToggle>()) 
