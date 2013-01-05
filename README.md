@@ -186,7 +186,7 @@ Version History
 **0.3.4753.37554**
 
 - Removed MutableToggle
-- Added thhe ability to "freeze" a toggle configuration.
+- Added the ability to "freeze" a toggle configuration.
 - Validation of toggle state (including cycles in dependencies) now occur on addition to the feature configuration container.
 
 **0.3.4749.36197**
@@ -201,7 +201,7 @@ Version History
 **v0.2.4730.37739**
 
 - Added DependencyToggle.
-- Changed from a Dictionary to a ConcurrenDictionary.
+- Changed from a Dictionary to a ConcurrentDictionary.
 
 **v0.2.4705.37094**
 
