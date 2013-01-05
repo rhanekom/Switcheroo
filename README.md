@@ -183,6 +183,12 @@ Until         11/21/2012 3:32:23 PM
 
 Version History
 ---------------
+**0.3.4753.37554**
+
+- Removed MutableToggle
+- Added thhe ability to "freeze" a toggle configuration.
+- Validation of toggle state (including cycles in dependencies) now occur on addition to the feature configuration container.
+
 **0.3.4749.36197**
 
 - Mechanism for detecting dependency cycles.  This feature is only active when configuring dependencies via application configuration.
