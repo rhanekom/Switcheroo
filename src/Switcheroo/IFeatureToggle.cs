@@ -52,5 +52,18 @@ namespace Switcheroo
         /// </summary>
         /// <exception cref="InvalidConfigurationException">This toggle is in an invalid state to be evaulated.</exception>
         void AssertConfigurationIsValid();
+
+        /// <summary>
+        /// Freezes this instance so that no more changes can be made to it.
+        /// </summary>
+        void Freeze();
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is frozen.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is frozen; otherwise, <c>false</c>.
+        /// </value>
+        bool IsFrozen { get; }
     }
 }

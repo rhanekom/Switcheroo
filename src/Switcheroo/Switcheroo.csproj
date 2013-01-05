@@ -57,6 +57,7 @@
     <Compile Include="Configuration\IFeatureToggleConfiguration.cs" />
     <Compile Include="Exceptions\CircularDependencyException.cs" />
     <Compile Include="Exceptions\InvalidConfigurationException.cs" />
+    <Compile Include="Exceptions\ToggleFrozenException.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IConfigurationExpression.cs" />
     <Compile Include="Configuration\FeatureToggleConfiguration.cs" />

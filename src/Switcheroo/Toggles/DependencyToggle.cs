@@ -90,6 +90,24 @@ namespace Switcheroo.Toggles
             }
         }
 
+        /// <summary>
+        /// Freezes this instance so that no more changes can be made to it.
+        /// </summary>
+        public override void Freeze()
+        {
+            if (IsFrozen)
+            {
+                return;
+            }
+
+            base.Freeze();
+
+            foreach (var dependency in dependencies)
+            {
+                dependency.Freeze();
+            }
+        }
+
         #endregion
 
         #region Public Members
@@ -100,6 +118,11 @@ namespace Switcheroo.Toggles
         /// <param name="toggle">The toggle to add as a dependency.</param>
         public void AddDependency(IFeatureToggle toggle)
         {
+            if (IsFrozen)
+            {
+                throw new ToggleFrozenException("Toggle is frozen and can not be modified.");
+            }
+
             dependencies.Add(toggle);
         }
 

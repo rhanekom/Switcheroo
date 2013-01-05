@@ -72,6 +72,9 @@ namespace Switcheroo
                 throw new ArgumentNullException("toggle");
             }
 
+            toggle.AssertConfigurationIsValid();
+            toggle.Freeze();
+
             features.AddOrUpdate(toggle.Name, toggle, (key, value) => toggle);
         }
 

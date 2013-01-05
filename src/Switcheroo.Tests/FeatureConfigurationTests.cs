@@ -22,6 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+using Switcheroo.Exceptions;
+using Switcheroo.Tests.Configuration;
+
 namespace Switcheroo.Tests
 {
     using System;
@@ -55,6 +58,19 @@ namespace Switcheroo.Tests
             var actual = configuration.Get(TestFeatureName);
 
             Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void Add_Verifies_And_Freezes_Toggle()
+        {
+            var configuration = new FeatureConfiguration();
+            var toggle = new Mock<IFeatureToggle>();
+            toggle.Setup(x => x.AssertConfigurationIsValid());
+            toggle.Setup(x => x.Freeze());
+            toggle.Setup(x => x.Name).Returns("name");
+
+            configuration.Add(toggle.Object);
+            toggle.VerifyAll();
         }
 
         [Test]
@@ -271,6 +287,46 @@ namespace Switcheroo.Tests
 
             StringAssert.Contains("f2", diagnostics);
             StringAssert.Contains(bool.FalseString, diagnostics);
+        }
+
+        [Test]
+        public void Read_Throws_CircularDependecy_Exception_For_Circular_Dependencies()
+        {
+            var reader = new ApplicationConfigurationReader(() => new DummyToggleConfig
+                {
+                    Toggles = new FeatureToggleCollection
+                        {
+                            new ToggleConfig
+                                {
+                                    Name = "a",
+                                    Dependencies = "b,d"
+                                },
+                            new ToggleConfig
+                                {
+                                    Name = "b"
+                                },
+                            new ToggleConfig
+                                {
+                                    Name = "c"
+                                },
+                            new ToggleConfig
+                                {
+                                    Name = "d",
+                                    Dependencies = "b, a"
+                                },
+                        }
+                });
+
+            var configuration = new FeatureConfiguration();
+            var features = reader.GetFeatures().ToList();
+
+            Assert.Throws<CircularDependencyException>(() =>
+                {
+                    foreach (var feature in features)
+                    {
+                        configuration.Add(feature);
+                    }
+                });
         }
 
         #endregion

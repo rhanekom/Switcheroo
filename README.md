@@ -119,8 +119,6 @@ features.Add(new EstablishedFeatureToggle("establishedFeature"));
 
 Features can depend on other features.  For instance, it is sometimes convenient to have a "main" feature, and then sub-features that depend on it.  Dependencies can be specified in configuration as a comma delimited list.
 
-_Note: Detection for circular dependencies when manipulating the feature toggles via code are not yet detected and will result in a StackOverflowException being thrown.  Simple detection for this case is in place when using the application configuration to configure feature toggles._
-
 ```c#
 var mainFeature = new BooleanToggle("mainFeature", true);
 var subFeature1 = new BooleanToggle("subFeature1", true);

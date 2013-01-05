@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+using Moq;
+
 namespace Switcheroo.Tests.Toggles
 {
     using System.Linq;
@@ -103,6 +105,16 @@ namespace Switcheroo.Tests.Toggles
         }
 
         [Test]
+        public void AddDependency_Throws_If_Object_Is_Frozen()
+        {
+            var toggle = new DependencyToggle(new BooleanToggle(ToggleName, true));
+            toggle.Freeze();
+            
+            var dependency = new BooleanToggle("a", true);
+            Assert.Throws<ToggleFrozenException>(() => toggle.AddDependency(dependency));
+        }
+
+        [Test]
         public void AssertConfigurationIsValid_Throws_For_CircularDependency()
         {
             var toggle1 = new DependencyToggle(new BooleanToggle(ToggleName, true));
@@ -141,6 +153,41 @@ namespace Switcheroo.Tests.Toggles
             toggle3.AddDependency(toggle4);
 
             Assert.DoesNotThrow(toggle1.AssertConfigurationIsValid);
+        }
+
+        [Test]
+        public void Toggle_Is_Unfrozen_By_Default()
+        {
+            var toggle1 = new DependencyToggle(new BooleanToggle(ToggleName, true));
+            Assert.IsFalse(toggle1.IsFrozen);
+        }
+
+        [Test]
+        public void Freeze_Freezes_Toggle()
+        {
+            var toggle1 = new DependencyToggle(new BooleanToggle(ToggleName, true));
+            toggle1.Freeze();
+            Assert.IsTrue(toggle1.IsFrozen);
+        }
+
+        [Test]
+        public void Freeze_Freezes_Dependencies()
+        {
+            var toggle1 = new DependencyToggle(new BooleanToggle(ToggleName, true));
+            var dependency1 = new Mock<IFeatureToggle>();
+            var dependency2 = new Mock<IFeatureToggle>();
+
+            toggle1.AddDependency(dependency1.Object);
+            toggle1.AddDependency(dependency2.Object);
+
+            dependency1.Setup(x => x.Freeze());
+            dependency2.Setup(x => x.Freeze());
+
+            toggle1.Freeze();
+
+            Assert.IsTrue(toggle1.IsFrozen);
+            dependency1.VerifyAll();
+            dependency2.VerifyAll();
         }
 
         #endregion

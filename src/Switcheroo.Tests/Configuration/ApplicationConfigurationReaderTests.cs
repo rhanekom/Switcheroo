@@ -199,39 +199,6 @@ namespace Switcheroo.Tests.Configuration
         }
 
         [Test]
-        public void Read_Throws_CircularDependecy_Exception_For_Circular_Dependencies()
-        {
-            var reader = new ApplicationConfigurationReader(() => new DummyToggleConfig
-                {
-                    Toggles = new FeatureToggleCollection
-                        {
-                            new ToggleConfig
-                                {
-                                    Name = "a",
-                                    Dependencies = "b,d"
-                                },
-                            new ToggleConfig
-                                {
-                                    Name = "b"
-                                },
-                            new ToggleConfig
-                                {
-                                    Name = "c"
-                                },
-                            new ToggleConfig
-                                {
-                                    Name = "d",
-                                    Dependencies = "b, a"
-                                },
-                        }
-                });
-
-            // ReSharper disable ReturnValueOfPureMethodIsNotUsed
-            Assert.Throws<CircularDependencyException>(() => reader.GetFeatures().ToList());
-            // ReSharper restore ReturnValueOfPureMethodIsNotUsed
-        }
-
-        [Test]
         public void Read_Throws_Configuration_Exception_For_Unknown_Tasks_In_Dependencies()
         {
             var reader = new ApplicationConfigurationReader(() => new DummyToggleConfig

@@ -40,6 +40,21 @@ namespace Switcheroo.Tests.Toggles
         #region Tests
 
         [Test]
+        public void Feature_Is_Unfrozen_By_Default()
+        {
+            var toggle = new BooleanToggle(TestName, true);
+            Assert.IsFalse(toggle.IsFrozen);
+        }
+
+        [Test]
+        public void Freeze_Freezes_Toggle()
+        {
+            var toggle = new BooleanToggle(TestName, true);
+            toggle.Freeze();
+            Assert.IsTrue(toggle.IsFrozen);
+        }
+
+        [Test]
         public void Construction_Sets_Enabled()
         {
             var toggle = new BooleanToggle(TestName, true);

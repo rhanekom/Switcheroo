@@ -73,31 +73,16 @@ namespace Switcheroo.Configuration
         {
             var configuration = reader();
 
-            if (configuration == null)
-            {
-                return Enumerable.Empty<IFeatureToggle>();
-            }
-
-            var items = BuildToggles(configuration);
-
-            AssertConfigurationValid(items);
-
-            return items;
+            return configuration == null 
+                ? Enumerable.Empty<IFeatureToggle>() 
+                : BuildToggles(configuration);
         }
 
         #endregion
 
         #region Private Members
 
-        private static void AssertConfigurationValid(IEnumerable<IFeatureToggle> items)
-        {
-            foreach (var item in items)
-            {
-                item.AssertConfigurationIsValid();
-            }
-        }
-
-        private List<IFeatureToggle> BuildToggles(IFeatureToggleConfiguration configuration)
+        private IEnumerable<IFeatureToggle> BuildToggles(IFeatureToggleConfiguration configuration)
         {
             Dictionary<string, KeyValuePair<ToggleConfig, IFeatureToggle>> toggles =
                 configuration
@@ -105,8 +90,7 @@ namespace Switcheroo.Configuration
                     .Cast<ToggleConfig>()
                     .ToDictionary(x => x.Name, x => new KeyValuePair<ToggleConfig, IFeatureToggle>(x, ConvertToFeatureToggle(x)));
 
-            var items = BuildDependencies(toggles).ToList();
-            return items;
+            return BuildDependencies(toggles).ToList();
         }
 
         private IEnumerable<IFeatureToggle> BuildDependencies(Dictionary<string, KeyValuePair<ToggleConfig, IFeatureToggle>> toggles)

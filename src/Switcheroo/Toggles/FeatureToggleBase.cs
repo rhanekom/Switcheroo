@@ -78,6 +78,22 @@ namespace Switcheroo.Toggles
             // noop
         }
 
+        /// <summary>
+        /// Freezes this instance so that no more changes can be made to it.
+        /// </summary>
+        public virtual void Freeze()
+        {
+            IsFrozen = true;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is frozen.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is frozen; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsFrozen { get; private set; }
+
         #endregion
 
         #region Object Members
