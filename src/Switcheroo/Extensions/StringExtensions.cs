@@ -34,7 +34,7 @@ namespace Switcheroo.Extensions
         /// A string will be truncated if longer than <paramref name="maxLength"/>,
         /// or padded with spaces if shorter and <paramref name="pad"/> is set to <c>true</c>.
         /// </summary>
-        /// <param name="str">The string to prepare fo display.</param>
+        /// <param name="str">The string to prepare for display.</param>
         /// <param name="maxLength">The maximum allowed length of a string.</param>
         /// <param name="pad">if set to <c>true</c> then right pad the string with spaces up to the maximum length.</param>
         /// <returns>
